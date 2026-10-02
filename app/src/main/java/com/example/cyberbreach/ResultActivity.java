@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.cyberbreach.data.DbHelper;
 import com.example.cyberbreach.data.PrefsManager;
 import com.example.cyberbreach.databinding.ActivityResultBinding;
+import com.example.cyberbreach.engine.LevelEngine;
+import com.example.cyberbreach.engine.StarBreakdown;
 import com.example.cyberbreach.model.Level;
 import com.example.cyberbreach.model.LevelStore;
 
@@ -44,8 +46,10 @@ public class ResultActivity extends AppCompatActivity {
         mode = in.getStringExtra(IntentKeys.MODE);
         if (mode == null) mode = "CHALLENGE";
 
+        StarBreakdown breakdown = LevelEngine.evaluatePerformance(solved, wrong, hints, level.timeLimitSec - timeSec, level.timeLimitSec);
+
         binding.tvHeadline.setText(solved ? R.string.result_contained : R.string.result_breached);
-        binding.ratingStars.setRating(stars);
+        binding.ratingStars.setRating(breakdown.totalStars);
         binding.tvTime.setText(String.format(Locale.US, "%02d:%02d", timeSec / 60, timeSec % 60));
         binding.tvHints.setText(String.valueOf(hints));
         binding.tvWrong.setText(String.valueOf(wrong));
@@ -81,7 +85,7 @@ public class ResultActivity extends AppCompatActivity {
                 Intent i = new Intent(this, ReportActivity.class);
                 i.putExtra(IntentKeys.LEVEL_ID, level.id);
                 i.putExtra(IntentKeys.MODE, mode);
-                i.putExtra(IntentKeys.STARS, stars);
+                i.putExtra(IntentKeys.STARS, breakdown.totalStars);
                 i.putExtra(IntentKeys.TIME_SEC, timeSec);
                 i.putExtra(IntentKeys.HINTS, hints);
                 i.putExtra(IntentKeys.WRONG, wrong);
@@ -90,12 +94,12 @@ public class ResultActivity extends AppCompatActivity {
         }
 
         if (savedInstanceState == null) {
-            saveResult();
+            saveResult(breakdown.totalStars);
         }
     }
 
     /** Runs once per result. These writes are tiny, so the main thread is acceptable here. */
-    private void saveResult() {
+    private void saveResult(int evaluatedStars) {
         DbHelper db = DbHelper.get(this);
         db.insertAttempt(level.id, mode, timeSec, hints, solved);
 
@@ -106,8 +110,8 @@ public class ResultActivity extends AppCompatActivity {
             db.unlock(nextId);
         }
         if ("CHALLENGE".equals(mode)) {
-            db.recordBest(level.id, timeSec, stars);
-            db.addCredits(stars * 10);
+            db.recordBest(level.id, timeSec, evaluatedStars);
+            db.addCredits(evaluatedStars * 10);
         }
         new PrefsManager(this).updateStreak();
     }
