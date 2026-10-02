@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.cyberbreach.engine.StatsEngine;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -209,9 +211,6 @@ public class DbHelper extends SQLiteOpenHelper {
     // ---------- helpers ----------
 
     public static String rankForStars(int totalStars) {
-        if (totalStars < 5) return "Intern";
-        if (totalStars < 12) return "Analyst";
-        if (totalStars < 20) return "Senior Analyst";
-        return "Incident Lead";
+        return StatsEngine.rankForStars(totalStars);
     }
 }

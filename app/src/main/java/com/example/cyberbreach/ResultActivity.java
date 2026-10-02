@@ -11,6 +11,7 @@ import com.example.cyberbreach.data.PrefsManager;
 import com.example.cyberbreach.databinding.ActivityResultBinding;
 import com.example.cyberbreach.engine.LevelEngine;
 import com.example.cyberbreach.engine.StarBreakdown;
+import com.example.cyberbreach.engine.StatsEngine;
 import com.example.cyberbreach.model.Level;
 import com.example.cyberbreach.model.LevelStore;
 
@@ -111,7 +112,9 @@ public class ResultActivity extends AppCompatActivity {
         }
         if ("CHALLENGE".equals(mode)) {
             db.recordBest(level.id, timeSec, evaluatedStars);
-            db.addCredits(evaluatedStars * 10);
+            int streak = new PrefsManager(this).getStreak();
+            int awardedCredits = StatsEngine.calculateAwardedCredits(evaluatedStars, streak);
+            db.addCredits(awardedCredits);
         }
         new PrefsManager(this).updateStreak();
     }
