@@ -1,0 +1,132 @@
+<resources>
+    <string name="app_name">Cyber Breach</string>
+
+    <string name="tab_play">Play</string>
+    <string name="tab_learn">Learn</string>
+    <string name="tab_profile">Profile</string>
+
+    <string name="label_mode">Mode</string>
+    <string name="label_lesson">Lesson</string>
+    <string name="source_bundled">Using built-in levels</string>
+    <string name="desc_locked">Level locked</string>
+
+    <string name="btn_hint">Hint</string>
+    <string name="hud_breach">BREACH</string>
+    <string name="status_ready">Select a tool, then tap a log row.</string>
+    <string name="desc_tool_icon">Selected defense tool</string>
+
+    <string name="profile_title">Analyst Profile</string>
+    <string name="desc_rank_badge">Rank badge</string>
+    <string name="stat_rank">Rank</string>
+    <string name="stat_stars">Total stars</string>
+    <string name="stat_credits">Credits</string>
+    <string name="stat_attempts">Attempts</string>
+    <string name="settings_mute">Mute sound</string>
+    <string name="settings_haptics">Haptic feedback</string>
+    <string name="settings_reminder">Daily reminder</string>
+    <string name="btn_upgrade_firewall">Upgrade Firewall</string>
+    <string name="btn_upgrade_filter">Upgrade Log Filter</string>
+    <string name="btn_reset_progress">Reset progress</string>
+    <string name="btn_clear_history">Clear history</string>
+
+    <string name="dialog_hint_title">Use a hint?</string>
+    <string name="dialog_hint_message">Challenge mode: this hint costs %1$d seconds.</string>
+    <string name="dialog_use_hint">Use hint</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_exit_title">Leave the room?</string>
+    <string name="dialog_exit_message">The breach stays active and your progress in this room is lost.</string>
+    <string name="dialog_leave">Leave</string>
+    <string name="dialog_solved_title">Breach contained!</string>
+    <string name="dialog_solved_message">Stars: %1$d\nTime: %2$d s</string>
+    <string name="dialog_gameover_title">NETWORK BREACHED</string>
+    <string name="dialog_gameover_message">The attacker got in before you contained the incident.\n\nWhat you missed:\n%1$s</string>
+    <string name="btn_ok">OK</string>
+    <string name="btn_retry">Retry</string>
+    <string name="btn_exit">Exit</string>
+    <string name="btn_close">Close</string>
+    <string name="toast_no_hints">No more hints for this room.</string>
+
+    <string name="label_concept">Concept card</string>
+    <string name="btn_start">Start room</string>
+    <string name="btn_learn_more">Learn more online</string>
+    <string name="mode_label_learn">Mode: Learn (no timer)</string>
+    <string name="mode_label_challenge">Mode: Challenge (timed)</string>
+    <string name="desc_video">Concept explainer video</string>
+
+    <string name="result_contained">INCIDENT CONTAINED</string>
+    <string name="result_breached">NETWORK BREACHED</string>
+    <string name="row_time">Time</string>
+    <string name="row_hints">Hints used</string>
+    <string name="row_wrong">Mistakes</string>
+    <string name="row_mode">Mode</string>
+    <string name="label_debrief">Debrief: what happened and how to fix it</string>
+    <string name="btn_next">Next level</string>
+    <string name="btn_share">Share</string>
+    <string name="btn_report">Incident report</string>
+    <string name="btn_debrief">Debrief</string>
+    <string name="dialog_gameover_short">The attacker got in before you contained the incident.</string>
+    <string name="share_text">I just finished \"%1$s\" in Cyber Breach with %2$d star(s) in %3$d seconds!</string>
+    <string name="share_chooser">Share your result</string>
+    <string name="toast_no_browser">No browser found on this device.</string>
+
+    <string name="toast_level_locked">Complete the previous level to unlock this one.</string>
+    <string name="upgrade_format">Upgrade %1$s: tier %2$d to %3$d (%4$d credits)</string>
+    <string name="toast_not_enough_credits">Not enough credits yet. Earn stars to get more.</string>
+    <string name="toast_upgraded">Upgrade installed!</string>
+    <string name="dialog_reset_title">Reset all progress?</string>
+    <string name="dialog_reset_message">This deletes stars, best times, unlocked levels, credits and upgrades. It cannot be undone.</string>
+    <string name="dialog_clear_title">Clear attempt history?</string>
+    <string name="dialog_clear_message">Your stars and unlocks stay. Only the list of past attempts is deleted.</string>
+    <string name="dialog_confirm">Confirm</string>
+    <string name="toast_reset_done">Progress reset.</string>
+    <string name="toast_history_cleared">History cleared.</string>
+
+    <string name="source_remote">Online: latest levels loaded</string>
+    <string name="source_cache">Offline: using your last downloaded levels</string>
+    <string name="source_error">Could not load levels. Check your connection.</string>
+
+    <string name="title_report">Incident Response Report</string>
+    <string name="desc_report_preview">Preview of the incident response report</string>
+    <string name="btn_export_pdf">Export PDF to Documents</string>
+    <string name="btn_share_report">Share report</string>
+    <string name="report_not_exported">Not exported yet.</string>
+    <string name="report_exported">Saved to Documents/CyberBreach as %1$s</string>
+    <string name="toast_export_failed">Could not save the report.</string>
+    <string name="share_report_chooser">Share your incident report</string>
+
+    <string name="perm_storage_title">Storage permission needed</string>
+    <string name="perm_storage_message">On this Android version the app needs permission to save the PDF into your Documents folder. Nothing else on your device is read.</string>
+    <string name="perm_storage_denied">Permission denied, so the report was not saved. You can try again any time.</string>
+
+    <string name="perm_notif_title">Allow notifications?</string>
+    <string name="perm_notif_message">The daily reminder sends one notification a day to nudge you to play. You can turn it off at any time.</string>
+    <string name="perm_notif_denied">Notifications are off, so the reminder was not enabled.</string>
+    <string name="perm_continue">Continue</string>
+    <string name="toast_reminder_on">Daily reminder set for 6 PM.</string>
+    <string name="toast_reminder_off">Daily reminder turned off.</string>
+    <string name="notif_channel_name">Daily challenge reminders</string>
+    <string name="notif_title">New incident waiting</string>
+    <string name="notif_text">A suspicious alert just came in. Ready to investigate?</string>
+
+    <string-array name="mode_array">
+        <item>Learn (no timer)</item>
+        <item>Challenge (timed)</item>
+    </string-array>
+
+    <string-array name="lesson_titles">
+        <item>What is a port?</item>
+        <item>Brute-force attacks</item>
+    </string-array>
+
+    <string-array name="lesson_files">
+        <item>ports.html</item>
+        <item>bruteforce.html</item>
+    </string-array>
+
+    <string-array name="tool_array">
+        <item>Packet Analyzer</item>
+        <item>Firewall</item>
+        <item>Log Filter</item>
+        <item>Patch Manager</item>
+    </string-array>
+</resources>

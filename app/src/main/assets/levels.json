@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "pack": "Core Rooms",
+  "levels": [
+    {
+      "id": "tut_01",
+      "title": "Tutorial: The Open Door",
+      "org": "Greenfield High School",
+      "track": "Networking basics",
+      "concept": "ports",
+      "timeLimitSec": 90,
+      "vulnerability": { "type": "open_port", "fix": "close_port", "target": "23" },
+      "debrief": "Telnet sends usernames and passwords in plain text, so anyone on the path can read them. Closing unused ports and using SSH (port 22) instead removes the risk.",
+      "hints": [
+        "Look for a service that should never be reachable from outside.",
+        "Telnet (port 23) sends everything unencrypted.",
+        "Select the Firewall and tap a row that uses port 23."
+      ],
+      "logs": [
+        { "time": "09:01:12", "src": "198.51.100.7", "port": 443, "event": "HTTPS_OK", "detail": "Encrypted web session, normal traffic" },
+        { "time": "09:01:15", "src": "192.0.2.20", "port": 80, "event": "HTTP_OK", "detail": "Student portal page request" },
+        { "time": "09:01:19", "src": "203.0.113.45", "port": 23, "event": "TELNET_OPEN", "detail": "Unencrypted remote login from an external host" },
+        { "time": "09:01:24", "src": "192.0.2.31", "port": 53, "event": "DNS_QUERY", "detail": "Lookup for library.example" },
+        { "time": "09:01:30", "src": "198.51.100.9", "port": 443, "event": "HTTPS_OK", "detail": "Encrypted web session, normal traffic" },
+        { "time": "09:01:36", "src": "203.0.113.45", "port": 23, "event": "TELNET_DATA", "detail": "Password sent in plain text" }
+      ]
+    },
+    {
+      "id": "bf_01",
+      "title": "Night Shift at St. Mary's",
+      "org": "St. Mary's Hospital",
+      "track": "Common attacks",
+      "concept": "bruteforce",
+      "timeLimitSec": 120,
+      "vulnerability": { "type": "brute_force", "fix": "block_ip", "target": "203.0.113.45" },
+      "debrief": "A brute-force attack tries many passwords until one works. Rate limiting, account lockouts, strong passwords and multi-factor authentication stop it; blocking the source address contains it.",
+      "hints": [
+        "Count the failed logins per address.",
+        "One source repeats LOGIN_FAIL many times in a few seconds.",
+        "Use the Firewall on an entry from 203.0.113.45."
+      ],
+      "logs": [
+        { "time": "02:14:01", "src": "203.0.113.45", "port": 22, "event": "LOGIN_FAIL", "detail": "User admin, wrong password" },
+        { "time": "02:14:02", "src": "198.51.100.7", "port": 443, "event": "HTTPS_OK", "detail": "Nurse portal, normal traffic" },
+        { "time": "02:14:02", "src": "203.0.113.45", "port": 22, "event": "LOGIN_FAIL", "detail": "User root, wrong password" },
+        { "time": "02:14:03", "src": "203.0.113.45", "port": 22, "event": "LOGIN_FAIL", "detail": "User admin, wrong password" },
+        { "time": "02:14:05", "src": "192.0.2.44", "port": 22, "event": "LOGIN_OK", "detail": "Dr. Rao signed in with an SSH key" },
+        { "time": "02:14:06", "src": "203.0.113.45", "port": 22, "event": "LOGIN_FAIL", "detail": "User pharmacy, wrong password" },
+        { "time": "02:14:08", "src": "203.0.113.45", "port": 22, "event": "LOGIN_OK", "detail": "User admin signed in after 41 failures" }
+      ]
+    },
+    {
+      "id": "def_patch_01",
+      "title": "The Outdated Shop",
+      "org": "BlueCart Online Store",
+      "track": "Defense",
+      "concept": "patching",
+      "timeLimitSec": 150,
+      "vulnerability": { "type": "unpatched_service", "fix": "patch", "target": "EXPLOIT_ATTEMPT" },
+      "debrief": "Attackers scan for software with known, already fixed flaws. Patching promptly closes the hole; blocking one address only hides the problem until the next scanner arrives.",
+      "hints": [
+        "Look for events that mention a known flaw.",
+        "The attacker is exploiting outdated software, not guessing passwords.",
+        "Open Patch Manager and tap an EXPLOIT_ATTEMPT row."
+      ],
+      "logs": [
+        { "time": "14:22:10", "src": "198.51.100.21", "port": 443, "event": "HTTPS_OK", "detail": "Customer browsing the catalogue" },
+        { "time": "14:22:14", "src": "203.0.113.88", "port": 443, "event": "EXPLOIT_ATTEMPT", "detail": "Request targets a known flaw in checkout plugin v1.2" },
+        { "time": "14:22:19", "src": "192.0.2.15", "port": 443, "event": "HTTPS_OK", "detail": "Customer checkout completed" },
+        { "time": "14:22:23", "src": "203.0.113.88", "port": 443, "event": "EXPLOIT_ATTEMPT", "detail": "Same flaw probed again" },
+        { "time": "14:22:30", "src": "198.51.100.30", "port": 80, "event": "HTTP_OK", "detail": "Redirect to HTTPS" }
+      ]
+    }
+  ]
+}
