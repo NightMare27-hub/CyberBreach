@@ -52,6 +52,14 @@ public final class LevelParser {
                     e.optString("detail", "")));
         }
 
+        Level.Difficulty difficulty = Level.Difficulty.MEDIUM;
+        String diffStr = o.optString("difficulty", "");
+        if (!diffStr.isEmpty()) {
+            try {
+                difficulty = Level.Difficulty.valueOf(diffStr.toUpperCase(java.util.Locale.ROOT));
+            } catch (IllegalArgumentException ignored) { }
+        }
+
         return new Level(
                 o.getString("id"),
                 o.getString("title"),
@@ -64,6 +72,7 @@ public final class LevelParser {
                 vuln.getString("target"),
                 o.optString("debrief", ""),
                 hints,
-                logs);
+                logs,
+                difficulty);
     }
 }

@@ -26,6 +26,7 @@ public class GameEngine {
     private final Mode mode;
     private final int penaltyPerMistake;
     private final int hintCostSec;
+    private final int analyzerTier;
 
     private int remainingSec;
     private int elapsedSec;
@@ -35,12 +36,13 @@ public class GameEngine {
     private int wrongActions;
     private boolean solved;
 
-    public GameEngine(Level level, Mode mode, int firewallTier, int filterTier) {
+    public GameEngine(Level level, Mode mode, int firewallTier, int filterTier, int analyzerTier) {
         this.level = level;
         this.mode = mode;
         this.remainingSec = level.timeLimitSec;
         this.penaltyPerMistake = ToolEngine.calculateFirewallPenalty(firewallTier);
         this.hintCostSec = ToolEngine.calculateHintCost(filterTier);
+        this.analyzerTier = analyzerTier;
     }
 
     /** Called once per second by the UI timer. */
@@ -58,7 +60,8 @@ public class GameEngine {
         }
         switch (tool) {
             case PACKET_ANALYZER:
-                return new ActionResult(Outcome.INFO, e.src + ":" + e.port + " - " + e.detail);
+                String detail = ToolEngine.analyzePacketDetail(e.detail, analyzerTier);
+                return new ActionResult(Outcome.INFO, e.src + ":" + e.port + " - " + detail);
             case LOG_FILTER:
                 return new ActionResult(Outcome.INFO, "Filter applied: traffic from " + e.src);
             case FIREWALL:
@@ -116,6 +119,11 @@ public class GameEngine {
         return mode == Mode.CHALLENGE && !solved && getBreachPercent() >= 100;
     }
 
+    /**
+     * @deprecated Use {@link com.example.cyberbreach.engine.LevelEngine#evaluatePerformance} instead.
+     * Kept temporarily for backward compatibility with intent extras.
+     */
+    @Deprecated
     public int getStars() {
         if (!solved || mode == Mode.LEARN) return 0;
         int stars = 3;

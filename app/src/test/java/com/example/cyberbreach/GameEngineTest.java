@@ -29,7 +29,7 @@ public class GameEngineTest {
 
     @Test
     public void wrongFirewallActionAddsPenalty() {
-        GameEngine e = new GameEngine(level(), GameEngine.Mode.CHALLENGE, 1, 1);
+        GameEngine e = new GameEngine(level(), GameEngine.Mode.CHALLENGE, 1, 1, 1);
         GameEngine.ActionResult r = e.apply(GameEngine.Tool.FIREWALL, INNOCENT);
         assertEquals(GameEngine.Outcome.WRONG, r.outcome);
         assertEquals(15, e.getBreachPercent());
@@ -38,7 +38,7 @@ public class GameEngineTest {
 
     @Test
     public void correctFirewallActionSolvesWithThreeStars() {
-        GameEngine e = new GameEngine(level(), GameEngine.Mode.CHALLENGE, 1, 1);
+        GameEngine e = new GameEngine(level(), GameEngine.Mode.CHALLENGE, 1, 1, 1);
         GameEngine.ActionResult r = e.apply(GameEngine.Tool.FIREWALL, ATTACKER);
         assertEquals(GameEngine.Outcome.SOLVED, r.outcome);
         assertTrue(e.isSolved());
@@ -47,7 +47,7 @@ public class GameEngineTest {
 
     @Test
     public void repeatedMistakesCauseBreach() {
-        GameEngine e = new GameEngine(level(), GameEngine.Mode.CHALLENGE, 1, 1);
+        GameEngine e = new GameEngine(level(), GameEngine.Mode.CHALLENGE, 1, 1, 1);
         for (int i = 0; i < 7; i++) {
             e.apply(GameEngine.Tool.FIREWALL, INNOCENT);   // 7 x 15 = 105
         }
@@ -57,7 +57,7 @@ public class GameEngineTest {
 
     @Test
     public void learnModeHasNoBreachAndNoStars() {
-        GameEngine e = new GameEngine(level(), GameEngine.Mode.LEARN, 1, 1);
+        GameEngine e = new GameEngine(level(), GameEngine.Mode.LEARN, 1, 1, 1);
         e.apply(GameEngine.Tool.FIREWALL, INNOCENT);
         assertEquals(0, e.getBreachPercent());
         assertFalse(e.isBreached());
@@ -67,7 +67,7 @@ public class GameEngineTest {
 
     @Test
     public void hintCostsTimeInChallengeMode() {
-        GameEngine e = new GameEngine(level(), GameEngine.Mode.CHALLENGE, 1, 1);
+        GameEngine e = new GameEngine(level(), GameEngine.Mode.CHALLENGE, 1, 1, 1);
         assertEquals("h1", e.useHint());
         assertEquals(90, e.getRemainingSec());
         assertEquals(10, e.getElapsedSeconds());
@@ -76,7 +76,7 @@ public class GameEngineTest {
 
     @Test
     public void hintsRunOut() {
-        GameEngine e = new GameEngine(level(), GameEngine.Mode.LEARN, 1, 1);
+        GameEngine e = new GameEngine(level(), GameEngine.Mode.LEARN, 1, 1, 1);
         e.useHint();
         e.useHint();
         e.useHint();
@@ -85,7 +85,7 @@ public class GameEngineTest {
 
     @Test
     public void upgradesReducePenaltyAndHintCost() {
-        GameEngine e = new GameEngine(level(), GameEngine.Mode.CHALLENGE, 3, 3);
+        GameEngine e = new GameEngine(level(), GameEngine.Mode.CHALLENGE, 3, 3, 1);
         e.apply(GameEngine.Tool.FIREWALL, INNOCENT);
         assertEquals(9, e.getBreachPercent());
         assertEquals(6, e.getHintCostSec());
@@ -93,7 +93,7 @@ public class GameEngineTest {
 
     @Test
     public void tickAdvancesBreachMeter() {
-        GameEngine e = new GameEngine(level(), GameEngine.Mode.CHALLENGE, 1, 1);
+        GameEngine e = new GameEngine(level(), GameEngine.Mode.CHALLENGE, 1, 1, 1);
         for (int i = 0; i < 50; i++) e.tick();
         assertEquals(50, e.getBreachPercent());
         assertEquals(50, e.getRemainingSec());
@@ -101,7 +101,7 @@ public class GameEngineTest {
 
     @Test
     public void manyHintsAndMistakesLowerStars() {
-        GameEngine e = new GameEngine(level(), GameEngine.Mode.CHALLENGE, 1, 1);
+        GameEngine e = new GameEngine(level(), GameEngine.Mode.CHALLENGE, 1, 1, 1);
         e.apply(GameEngine.Tool.FIREWALL, INNOCENT);
         e.apply(GameEngine.Tool.FIREWALL, INNOCENT);
         e.useHint();

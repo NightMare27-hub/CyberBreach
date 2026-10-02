@@ -1,1 +1,0 @@
-// Replaced by MainActivity.java

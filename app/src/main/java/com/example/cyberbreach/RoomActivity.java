@@ -83,7 +83,8 @@ public class RoomActivity extends AppCompatActivity {
         PrefsManager prefs = new PrefsManager(this);
         DbHelper db = DbHelper.get(this);
         engine = new GameEngine(level, mode,
-                db.getToolTier("firewall"), db.getToolTier("log_filter"));
+                db.getToolTier("firewall"), db.getToolTier("log_filter"),
+                db.getToolTier("packet_analyzer"));
         sound = new SoundManager(this, prefs.isMuted(), prefs.isHapticsEnabled());
 
         binding.tvRoomTitle.setText(level.title + "  |  " + level.org);

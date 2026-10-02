@@ -2,6 +2,7 @@ package com.example.cyberbreach.engine;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class StatsEngine {
 
@@ -46,6 +47,28 @@ public class StatsEngine {
         }
         if (!usedAnalyzer && hintsUsed == 0) {
             unlocked.add(Achievement.EAGLE_EYE);
+        }
+        return unlocked;
+    }
+
+    /**
+     * Evaluates global achievements that require data across all levels.
+     * @param allStars map of levelId to star count for each completed level
+     * @param totalLevelCount total number of available levels
+     */
+    public static List<Achievement> evaluateGlobalAchievements(
+            Map<String, Integer> allStars, int totalLevelCount) {
+        List<Achievement> unlocked = new ArrayList<>();
+        if (totalLevelCount <= 0 || allStars.size() < totalLevelCount) return unlocked;
+        boolean allThreeStars = true;
+        for (int stars : allStars.values()) {
+            if (stars < 3) {
+                allThreeStars = false;
+                break;
+            }
+        }
+        if (allThreeStars) {
+            unlocked.add(Achievement.MASTER_ANALYST);
         }
         return unlocked;
     }

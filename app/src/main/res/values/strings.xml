@@ -116,11 +116,13 @@
     <string-array name="lesson_titles">
         <item>What is a port?</item>
         <item>Brute-force attacks</item>
+        <item>Software patching</item>
     </string-array>
 
     <string-array name="lesson_files">
         <item>ports.html</item>
         <item>bruteforce.html</item>
+        <item>patching.html</item>
     </string-array>
 
     <string-array name="tool_array">
