@@ -1,5 +1,6 @@
 package com.example.cyberbreach.game;
 
+import com.example.cyberbreach.engine.ToolEngine;
 import com.example.cyberbreach.model.Level;
 import com.example.cyberbreach.model.LogEntry;
 
@@ -21,9 +22,6 @@ public class GameEngine {
         }
     }
 
-    private static final int BASE_PENALTY = 15;
-    private static final int BASE_HINT_COST_SEC = 10;
-
     private final Level level;
     private final Mode mode;
     private final int penaltyPerMistake;
@@ -41,8 +39,8 @@ public class GameEngine {
         this.level = level;
         this.mode = mode;
         this.remainingSec = level.timeLimitSec;
-        this.penaltyPerMistake = Math.max(5, BASE_PENALTY - 3 * (firewallTier - 1));
-        this.hintCostSec = Math.max(3, BASE_HINT_COST_SEC - 2 * (filterTier - 1));
+        this.penaltyPerMistake = ToolEngine.calculateFirewallPenalty(firewallTier);
+        this.hintCostSec = ToolEngine.calculateHintCost(filterTier);
     }
 
     /** Called once per second by the UI timer. */

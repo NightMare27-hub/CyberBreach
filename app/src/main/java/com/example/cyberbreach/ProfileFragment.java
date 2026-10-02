@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import com.example.cyberbreach.data.DbHelper;
 import com.example.cyberbreach.data.PrefsManager;
 import com.example.cyberbreach.databinding.FragmentProfileBinding;
+import com.example.cyberbreach.engine.ToolEngine;
 import com.example.cyberbreach.notify.ReminderScheduler;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -144,7 +145,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private int upgradeCost(int tier) {
-        return 30 * tier;
+        return ToolEngine.getUpgradeCost(tier);
     }
 
     private void upgrade(String toolId) {
