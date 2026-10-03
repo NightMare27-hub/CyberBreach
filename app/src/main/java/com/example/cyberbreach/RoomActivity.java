@@ -267,7 +267,7 @@ public class RoomActivity extends AppCompatActivity {
         row.addView(cell(String.valueOf(e.port), R.color.soc_primary, false));
         row.addView(cell(e.event, R.color.soc_primary, false));
 
-        row.setOnClickListener(v -> onRowTapped(e));
+        row.setOnClickListener(v -> onRowTapped(row, e));
         row.setOnLongClickListener(v -> {
             showPacketDialog(e);
             return true;
@@ -299,7 +299,7 @@ public class RoomActivity extends AppCompatActivity {
 
     // ---------- event handling ----------
 
-    private void onRowTapped(LogEntry entry) {
+    private void onRowTapped(TableRow row, LogEntry entry) {
         if (finished) return;
         sound.click();
 
@@ -310,6 +310,14 @@ public class RoomActivity extends AppCompatActivity {
         switch (result.outcome) {
             case INFO:
                 Toast.makeText(this, result.message, Toast.LENGTH_SHORT).show();
+                break;
+            case FLAGGED:
+                sound.success();
+                row.setBackgroundColor(getColor(R.color.soc_warning));
+                for (int i = 0; i < row.getChildCount(); i++) {
+                    ((TextView) row.getChildAt(i)).setTextColor(getColor(R.color.soc_background));
+                }
+                Toast.makeText(this, "Target Flagged!", Toast.LENGTH_SHORT).show();
                 break;
             case WRONG:
                 sound.alert();

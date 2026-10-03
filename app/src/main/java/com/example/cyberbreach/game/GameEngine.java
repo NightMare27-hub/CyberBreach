@@ -10,7 +10,7 @@ public class GameEngine {
 
     public enum Tool { PACKET_ANALYZER, FIREWALL, LOG_FILTER, PATCH_MANAGER, ISOLATION_FRAMEWORK, EMAIL_GATEWAY, CRYPTO_MANAGER }
 
-    public enum Outcome { INFO, WRONG, SOLVED }
+    public enum Outcome { INFO, WRONG, FLAGGED, SOLVED }
 
     public static class ActionResult {
         public final Outcome outcome;
@@ -34,6 +34,7 @@ public class GameEngine {
     private int penaltyPoints;
     private int hintsUsed;
     private int wrongActions;
+    private boolean threatFlagged;
     private boolean solved;
 
     public GameEngine(Level level, Mode mode, int firewallTier, int filterTier, int analyzerTier) {
@@ -58,12 +59,32 @@ public class GameEngine {
         if (solved) {
             return new ActionResult(Outcome.INFO, "Incident already contained.");
         }
+        
+        // Stage 1: Identify
+        if (tool == Tool.PACKET_ANALYZER) {
+            boolean isMalicious = matches("block_ip", e.src) || matches("isolate_host", e.src) 
+                || matches("close_port", String.valueOf(e.port)) || matches("patch", e.event) 
+                || matches("quarantine_email", e.event) || matches("enable_encryption", e.event) 
+                || matches("enable_encryption", String.valueOf(e.port));
+                
+            if (isMalicious) {
+                threatFlagged = true;
+                return new ActionResult(Outcome.FLAGGED, "Threat Flagged. Awaiting Mitigation Strategy...");
+            } else {
+                return mistake("Legitimate traffic flagged as malicious.");
+            }
+        }
+        
+        if (tool == Tool.LOG_FILTER) {
+            return new ActionResult(Outcome.INFO, "Filter applied: traffic from " + e.src);
+        }
+
+        // Stage 2: Mitigate
+        if (!threatFlagged) {
+            return mistake("RECKLESS ACTION: You must identify and flag the threat with the Packet Analyzer first!");
+        }
+
         switch (tool) {
-            case PACKET_ANALYZER:
-                String detail = ToolEngine.analyzePacketDetail(e.detail, analyzerTier);
-                return new ActionResult(Outcome.INFO, e.src + ":" + e.port + " - " + detail);
-            case LOG_FILTER:
-                return new ActionResult(Outcome.INFO, "Filter applied: traffic from " + e.src);
             case FIREWALL:
                 if (matches("block_ip", e.src) || matches("close_port", String.valueOf(e.port))) {
                     return markSolved();
