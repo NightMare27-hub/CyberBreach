@@ -166,7 +166,7 @@ public class RoomActivity extends AppCompatActivity {
         int secs = engine.getDisplaySeconds();
         int breach = engine.getBreachPercent();
         binding.tvTimer.setText(String.format(Locale.US, "%02d:%02d", secs / 60, secs % 60));
-        binding.tvTimer.setTextColor(getColor(breach >= 70 ? R.color.terminal_red : R.color.terminal_green));
+        binding.tvTimer.setTextColor(getColor(breach >= 70 ? R.color.soc_critical : R.color.soc_primary));
         binding.tvBreach.setText(getString(R.string.hud_breach) + " " + breach + "%");
         binding.progressBreach.setProgress(breach);
         if (engine.getMode() == GameEngine.Mode.CHALLENGE && !finished) {
@@ -243,10 +243,10 @@ public class RoomActivity extends AppCompatActivity {
 
     private TableRow headerRow() {
         TableRow row = new TableRow(this);
-        row.addView(cell("TIME", R.color.terminal_dim, true));
-        row.addView(cell("SOURCE", R.color.terminal_dim, true));
-        row.addView(cell("PORT", R.color.terminal_dim, true));
-        row.addView(cell("EVENT", R.color.terminal_dim, true));
+        row.addView(cell("TIME", R.color.soc_text_secondary, true));
+        row.addView(cell("SOURCE", R.color.soc_text_secondary, true));
+        row.addView(cell("PORT", R.color.soc_text_secondary, true));
+        row.addView(cell("EVENT", R.color.soc_text_secondary, true));
         return row;
     }
 
@@ -259,10 +259,10 @@ public class RoomActivity extends AppCompatActivity {
         getTheme().resolveAttribute(android.R.attr.selectableItemBackground, tv, true);
         row.setBackgroundResource(tv.resourceId);
 
-        row.addView(cell(e.time, R.color.terminal_green, false));
-        row.addView(cell(e.src, R.color.terminal_green, false));
-        row.addView(cell(String.valueOf(e.port), R.color.terminal_green, false));
-        row.addView(cell(e.event, R.color.terminal_green, false));
+        row.addView(cell(e.time, R.color.soc_primary, false));
+        row.addView(cell(e.src, R.color.soc_primary, false));
+        row.addView(cell(String.valueOf(e.port), R.color.soc_primary, false));
+        row.addView(cell(e.event, R.color.soc_primary, false));
 
         row.setOnClickListener(v -> onRowTapped(e));
         row.setOnLongClickListener(v -> {
@@ -287,7 +287,7 @@ public class RoomActivity extends AppCompatActivity {
     private void highlightSource(String src) {
         for (TableRow row : rows) {
             LogEntry e = (LogEntry) row.getTag();
-            int color = e.src.equals(src) ? R.color.terminal_amber : R.color.terminal_green;
+            int color = e.src.equals(src) ? R.color.soc_warning : R.color.soc_primary;
             for (int i = 0; i < row.getChildCount(); i++) {
                 ((TextView) row.getChildAt(i)).setTextColor(getColor(color));
             }

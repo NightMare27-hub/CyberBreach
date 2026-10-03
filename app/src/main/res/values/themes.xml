@@ -1,47 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Force dark mode app-wide: this cyber app is always dark -->
     <style name="Base.Theme.CyberBreach" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="colorPrimary">@color/cyber_primary</item>
-        <item name="colorOnPrimary">@color/cyber_on_primary</item>
-        <item name="colorPrimaryContainer">@color/cyber_primary_container</item>
-        <item name="colorOnPrimaryContainer">@color/cyber_on_primary_container</item>
+        <item name="colorPrimary">@color/soc_primary</item>
+        <item name="colorOnPrimary">#000000</item>
+        <item name="colorPrimaryContainer">@color/soc_transparent_primary</item>
+        <item name="colorOnPrimaryContainer">@color/soc_primary</item>
 
-        <item name="colorSecondary">@color/cyber_secondary</item>
-        <item name="colorOnSecondary">@color/cyber_on_secondary</item>
-        <item name="colorSecondaryContainer">@color/cyber_secondary_container</item>
-        <item name="colorOnSecondaryContainer">@color/cyber_on_secondary_container</item>
+        <item name="colorSecondary">@color/soc_accent_cyan</item>
+        <item name="colorOnSecondary">#000000</item>
 
-        <item name="colorError">@color/cyber_error</item>
-        <item name="colorOnError">@color/cyber_on_error</item>
-        <item name="colorErrorContainer">@color/cyber_error_container</item>
-        <item name="colorOnErrorContainer">@color/cyber_on_error_container</item>
+        <item name="colorError">@color/soc_critical</item>
+        <item name="colorOnError">#FFFFFF</item>
 
-        <item name="android:colorBackground">@color/cyber_background</item>
-        <item name="colorOnBackground">@color/cyber_on_background</item>
-        <item name="colorSurface">@color/cyber_surface</item>
-        <item name="colorOnSurface">@color/cyber_on_surface</item>
-        <item name="colorSurfaceVariant">@color/cyber_surface_variant</item>
-        <item name="colorOnSurfaceVariant">@color/cyber_on_surface_variant</item>
-        <item name="colorOutline">@color/cyber_outline</item>
-        <item name="colorOutlineVariant">@color/cyber_outline_variant</item>
-        <item name="colorSurfaceInverse">@color/cyber_inverse_surface</item>
-        <item name="colorOnSurfaceInverse">@color/cyber_inverse_on_surface</item>
-        <item name="colorPrimaryInverse">@color/cyber_inverse_primary</item>
-        <item name="colorSurfaceContainerLowest">@color/cyber_surface_container_lowest</item>
-        <item name="colorSurfaceContainerLow">@color/cyber_surface_container_low</item>
-        <item name="colorSurfaceContainer">@color/cyber_surface_container</item>
-        <item name="colorSurfaceContainerHigh">@color/cyber_surface_container_high</item>
-        <item name="colorSurfaceContainerHighest">@color/cyber_surface_container_highest</item>
-
-        <!-- Status bar and navigation bar -->
-        <item name="android:statusBarColor">@color/cyber_background</item>
-        <item name="android:navigationBarColor">@color/cyber_surface_container</item>
+        <item name="android:colorBackground">@color/soc_background</item>
+        <item name="colorOnBackground">@color/soc_text_primary</item>
+        <item name="colorSurface">@color/soc_surface</item>
+        <item name="colorOnSurface">@color/soc_text_primary</item>
+        <item name="colorSurfaceVariant">@color/soc_surface</item>
+        <item name="colorOnSurfaceVariant">@color/soc_text_secondary</item>
+        <item name="colorOutline">@color/soc_surface_stroke</item>
+        
+        <item name="android:statusBarColor">@color/soc_background</item>
+        <item name="android:navigationBarColor">@color/soc_surface</item>
     </style>
 
     <style name="CyberToolbarTitle" parent="TextAppearance.Material3.TitleLarge">
         <item name="android:fontFamily">monospace</item>
         <item name="android:textStyle">bold</item>
         <item name="android:letterSpacing">0.1</item>
+        <item name="android:textColor">@color/soc_primary</item>
     </style>
 
     <style name="Theme.CyberBreach" parent="Base.Theme.CyberBreach" />
