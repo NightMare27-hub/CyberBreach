@@ -63,6 +63,10 @@ public class LevelRepository {
                 if (NetworkUtil.isOnline(context)) {
                     String json = HttpClient.get(AppConfig.LEVELS_URL);
                     List<Level> levels = LevelParser.parsePack(json);
+                    // Append daily procedural bounties
+                    long todaySeed = System.currentTimeMillis() / (1000 * 60 * 60 * 24);
+                    levels.addAll(com.example.cyberbreach.game.ScenarioGenerator.generateDailyBounties(todaySeed, 5));
+                    
                     writeCache(json);
                     deliver(callback, new Loaded(levels, Source.REMOTE));
                     return;
@@ -89,14 +93,20 @@ public class LevelRepository {
             File cache = cacheFile();
             if (cache.exists()) {
                 String json = readAll(new FileInputStream(cache));
-                return new Loaded(LevelParser.parsePack(json), Source.CACHE);
+                List<Level> levels = LevelParser.parsePack(json);
+                long todaySeed = System.currentTimeMillis() / (1000 * 60 * 60 * 24);
+                levels.addAll(com.example.cyberbreach.game.ScenarioGenerator.generateDailyBounties(todaySeed, 5));
+                return new Loaded(levels, Source.CACHE);
             }
         } catch (IOException | JSONException e) {
             // cache is missing or damaged: try the bundled copy
         }
         try {
             String json = readAll(context.getAssets().open(AppConfig.BUNDLED_ASSET));
-            return new Loaded(LevelParser.parsePack(json), Source.BUNDLED);
+            List<Level> levels = LevelParser.parsePack(json);
+            long todaySeed = System.currentTimeMillis() / (1000 * 60 * 60 * 24);
+            levels.addAll(com.example.cyberbreach.game.ScenarioGenerator.generateDailyBounties(todaySeed, 5));
+            return new Loaded(levels, Source.BUNDLED);
         } catch (IOException | JSONException e) {
             return null;
         }
