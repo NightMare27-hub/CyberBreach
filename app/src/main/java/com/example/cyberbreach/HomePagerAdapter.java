@@ -15,17 +15,16 @@ public class HomePagerAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         switch (position) {
-            case 0:
-                return new PlayFragment();
-            case 1:
-                return new LearnFragment();
-            default:
-                return new ProfileFragment();
+            case 0: return new HomeFragment();
+            case 1: return new PlayFragment();
+            case 2: return new LearnFragment();
+            case 3: return new ArmoryFragment();
+            default: return new ProfileFragment();
         }
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 5;
     }
 }

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="Home Dashboard (WIP)" android:textAppearance="?attr/textAppearanceHeadline5" />
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvWelcomeHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Agent Dashboard"
+        android:textAppearance="?attr/textAppearanceHeadline4"
+        android:layout_marginBottom="24dp" />
+
+    <ImageView
+        android:id="@+id/ivRankBadge"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="8dp"
+        android:src="@android:drawable/btn_star_big_on" />
+
+    <TextView
+        android:id="@+id/tvRankText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rank: Beginner"
+        android:textAppearance="?attr/textAppearanceHeadline6"
+        android:layout_marginBottom="32dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="48dp">
+        
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Stars" />
+            <TextView android:id="@+id/tvStars" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textAppearance="?attr/textAppearanceHeadline6" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Credits" />
+            <TextView android:id="@+id/tvCredits" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textAppearance="?attr/textAppearanceHeadline6" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Attempts" />
+            <TextView android:id="@+id/tvAttempts" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textAppearance="?attr/textAppearanceHeadline6" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnContinueTraining"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Continue Training" />
+
+</LinearLayout>

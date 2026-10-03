@@ -1,8 +1,11 @@
 <resources>
     <string name="app_name">Cyber Breach</string>
 
+    <string name="tab_home">Home</string>
+    <string name="tab_missions">Missions</string>
     <string name="tab_play">Play</string>
     <string name="tab_learn">Learn</string>
+    <string name="tab_armory">Armory</string>
     <string name="tab_profile">Profile</string>
 
     <string name="label_mode">Mode</string>

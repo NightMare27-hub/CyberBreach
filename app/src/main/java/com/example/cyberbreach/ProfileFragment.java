@@ -63,9 +63,6 @@ public class ProfileFragment extends Fragment {
         binding.switchReminder.setChecked(prefs.isReminderEnabled());
         binding.switchReminder.setOnCheckedChangeListener((b, checked) -> onReminderToggled(checked));
 
-        binding.btnUpgradeFirewall.setOnClickListener(v -> upgrade("firewall"));
-        binding.btnUpgradeFilter.setOnClickListener(v -> upgrade("log_filter"));
-
         binding.btnResetProgress.setOnClickListener(v -> confirm(
                 R.string.dialog_reset_title, R.string.dialog_reset_message, () -> {
                     db.resetProgress();
@@ -134,28 +131,6 @@ public class ProfileFragment extends Fragment {
         binding.tvCredits.setText(String.valueOf(db.getCredits()));
         binding.tvAttempts.setText(String.valueOf(db.getAttemptCount()));
         binding.ivRank.setImageResource(android.R.drawable.btn_star_big_on);
-
-        binding.btnUpgradeFirewall.setText(upgradeLabel("Firewall", "firewall"));
-        binding.btnUpgradeFilter.setText(upgradeLabel("Log Filter", "log_filter"));
-    }
-
-    private String upgradeLabel(String name, String toolId) {
-        int tier = db.getToolTier(toolId);
-        return getString(R.string.upgrade_format, name, tier, tier + 1, upgradeCost(tier));
-    }
-
-    private int upgradeCost(int tier) {
-        return ToolEngine.getUpgradeCost(tier);
-    }
-
-    private void upgrade(String toolId) {
-        int cost = upgradeCost(db.getToolTier(toolId));
-        if (db.upgradeTool(toolId, cost)) {
-            Toast.makeText(requireContext(), R.string.toast_upgraded, Toast.LENGTH_SHORT).show();
-            refresh();
-        } else {
-            Toast.makeText(requireContext(), R.string.toast_not_enough_credits, Toast.LENGTH_SHORT).show();
-        }
     }
 
     private void confirm(int titleRes, int messageRes, Runnable onConfirm) {

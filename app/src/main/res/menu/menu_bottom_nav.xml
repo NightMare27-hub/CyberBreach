@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_home" android:icon="@drawable/ic_nav_home" android:title="@string/tab_home" />
+    <item android:id="@+id/nav_missions" android:icon="@drawable/ic_nav_missions" android:title="@string/tab_missions" />
+    <item android:id="@+id/nav_learn" android:icon="@drawable/ic_nav_learn" android:title="@string/tab_learn" />
+    <item android:id="@+id/nav_armory" android:icon="@drawable/ic_nav_armory" android:title="@string/tab_armory" />
+    <item android:id="@+id/nav_profile" android:icon="@drawable/ic_nav_profile" android:title="@string/tab_profile" />
+</menu>

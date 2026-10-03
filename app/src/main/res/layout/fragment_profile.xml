@@ -119,21 +119,6 @@
             android:text="@string/settings_reminder" />
 
         <Button
-            android:id="@+id/btnUpgradeFirewall"
-            style="@style/Widget.Material3.Button.TonalButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/btn_upgrade_firewall" />
-
-        <Button
-            android:id="@+id/btnUpgradeFilter"
-            style="@style/Widget.Material3.Button.TonalButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_upgrade_filter" />
-
-        <Button
             android:id="@+id/btnResetProgress"
             style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="match_parent"
