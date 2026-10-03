@@ -7,3 +7,4 @@
         android:color="@color/soc_primary" />
     <corners android:radius="16dp" />
 </shape>
+

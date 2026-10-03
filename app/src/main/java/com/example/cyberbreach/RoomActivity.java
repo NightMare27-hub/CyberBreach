@@ -33,7 +33,7 @@ import java.util.Locale;
 
 public class RoomActivity extends AppCompatActivity {
 
-    private static final long FEED_DELAY_MS = 1800;
+    private static final long FEED_DELAY_MS = 600;
 
     private ActivityRoomBinding binding;
     private Level level;
@@ -51,7 +51,10 @@ public class RoomActivity extends AppCompatActivity {
             android.R.drawable.ic_menu_search,
             android.R.drawable.ic_menu_close_clear_cancel,
             android.R.drawable.ic_menu_sort_by_size,
-            android.R.drawable.ic_menu_manage
+            android.R.drawable.ic_menu_manage,
+            android.R.drawable.ic_lock_lock,
+            android.R.drawable.ic_dialog_email,
+            android.R.drawable.ic_secure
     };
 
     private final Runnable feedRunnable = new Runnable() {

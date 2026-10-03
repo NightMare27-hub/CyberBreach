@@ -133,5 +133,8 @@
         <item>Firewall</item>
         <item>Log Filter</item>
         <item>Patch Manager</item>
+        <item>Isolation Framework</item>
+        <item>Email Gateway</item>
+        <item>Crypto Manager</item>
     </string-array>
 </resources>

@@ -8,7 +8,7 @@ public class GameEngine {
 
     public enum Mode { LEARN, CHALLENGE }
 
-    public enum Tool { PACKET_ANALYZER, FIREWALL, LOG_FILTER, PATCH_MANAGER }
+    public enum Tool { PACKET_ANALYZER, FIREWALL, LOG_FILTER, PATCH_MANAGER, ISOLATION_FRAMEWORK, EMAIL_GATEWAY, CRYPTO_MANAGER }
 
     public enum Outcome { INFO, WRONG, SOLVED }
 
@@ -74,6 +74,21 @@ public class GameEngine {
                     return markSolved();
                 }
                 return mistake("That service did not need patching.");
+            case ISOLATION_FRAMEWORK:
+                if (matches("isolate_host", e.src)) {
+                    return markSolved();
+                }
+                return mistake("Wrong host isolated.");
+            case EMAIL_GATEWAY:
+                if (matches("quarantine_email", e.event)) {
+                    return markSolved();
+                }
+                return mistake("Legitimate traffic quarantined.");
+            case CRYPTO_MANAGER:
+                if (matches("enable_encryption", e.event) || matches("enable_encryption", String.valueOf(e.port))) {
+                    return markSolved();
+                }
+                return mistake("Encryption applied to wrong target.");
             default:
                 return new ActionResult(Outcome.INFO, "");
         }
