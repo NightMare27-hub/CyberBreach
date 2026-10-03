@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/soc_background"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -9,46 +12,48 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tvCredits"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:gravity="center"
             android:layout_marginBottom="24dp"
-            android:text="Credits: 0"
-            android:textAppearance="?attr/textAppearanceHeadline6" />
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btnUpgradeFirewall"
-            style="@style/Widget.Material3.Button.TonalButton"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="AVAILABLE CREDITS"
+                android:textColor="@color/soc_text_secondary"
+                android:fontFamily="monospace"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvCredits"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="@color/soc_accent_cyan"
+                android:textSize="36sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Tools Container -->
+        <LinearLayout
+            android:id="@+id/toolsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:text="Upgrade Firewall" />
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btnUpgradeFilter"
-            style="@style/Widget.Material3.Button.TonalButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:text="Upgrade Log Filter" />
+            <!-- Tool items will be inflated here dynamically, or I can hardcode them. Let's hardcode for simplicity as the array is fixed -->
+            <include layout="@layout/item_armory_tool" android:id="@+id/cardAnalyzer" />
+            <include layout="@layout/item_armory_tool" android:id="@+id/cardFirewall" />
+            <include layout="@layout/item_armory_tool" android:id="@+id/cardFilter" />
+            <include layout="@layout/item_armory_tool" android:id="@+id/cardPatch" />
+            <include layout="@layout/item_armory_tool" android:id="@+id/cardIsolation" />
+            <include layout="@layout/item_armory_tool" android:id="@+id/cardEmail" />
+            <include layout="@layout/item_armory_tool" android:id="@+id/cardCrypto" />
 
-        <Button
-            android:id="@+id/btnUpgradeAnalyzer"
-            style="@style/Widget.Material3.Button.TonalButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:text="Upgrade Packet Analyzer" />
-
-        <Button
-            android:id="@+id/btnUpgradePatch"
-            style="@style/Widget.Material3.Button.TonalButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:text="Upgrade Patch Manager" />
-
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

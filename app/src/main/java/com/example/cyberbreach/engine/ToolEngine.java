@@ -29,10 +29,20 @@ public class ToolEngine {
         int nextTier = currentTier + 1;
         switch (toolName.toLowerCase()) {
             case "firewall":
-                return "Tier " + currentTier + " -> " + nextTier + " (" + calculateFirewallPenalty(nextTier) + "% mistake penalty)";
+                return "Tier " + currentTier + " -> " + nextTier + "\n(" + calculateFirewallPenalty(nextTier) + "% mistake penalty)";
             case "log_filter":
             case "log filter":
-                return "Tier " + currentTier + " -> " + nextTier + " (" + calculateHintCost(nextTier) + "s hint cost)";
+                return "Tier " + currentTier + " -> " + nextTier + "\n(" + calculateHintCost(nextTier) + "s hint cost)";
+            case "packet_analyzer":
+                return "Tier " + currentTier + " -> " + nextTier + "\n(Highlights high-risk anomalies)";
+            case "patch_manager":
+                return "Tier " + currentTier + " -> " + nextTier + "\n(Reduces patch deploy time by " + (nextTier * 10) + "%)";
+            case "isolation_framework":
+                return "Tier " + currentTier + " -> " + nextTier + "\n(Adds " + (nextTier * 5) + "% breach meter buffer)";
+            case "email_gateway":
+                return "Tier " + currentTier + " -> " + nextTier + "\n(" + (nextTier * 15) + "% chance to auto-flag phishing)";
+            case "crypto_manager":
+                return "Tier " + currentTier + " -> " + nextTier + "\n(Reduces crypto-error penalty by " + (nextTier * 20) + "%)";
             default:
                 return "Tier " + currentTier + " -> " + nextTier;
         }

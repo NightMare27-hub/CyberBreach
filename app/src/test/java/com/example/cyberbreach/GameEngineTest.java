@@ -39,6 +39,11 @@ public class GameEngineTest {
     @Test
     public void correctFirewallActionSolvesWithThreeStars() {
         GameEngine e = new GameEngine(level(), GameEngine.Mode.CHALLENGE, 1, 1, 1);
+        // Stage 1: Identify and flag threat
+        GameEngine.ActionResult flagRes = e.apply(GameEngine.Tool.PACKET_ANALYZER, ATTACKER);
+        assertEquals(GameEngine.Outcome.FLAGGED, flagRes.outcome);
+
+        // Stage 2: Mitigate with Firewall
         GameEngine.ActionResult r = e.apply(GameEngine.Tool.FIREWALL, ATTACKER);
         assertEquals(GameEngine.Outcome.SOLVED, r.outcome);
         assertTrue(e.isSolved());
@@ -61,6 +66,9 @@ public class GameEngineTest {
         e.apply(GameEngine.Tool.FIREWALL, INNOCENT);
         assertEquals(0, e.getBreachPercent());
         assertFalse(e.isBreached());
+        
+        // Stage 1 & 2
+        e.apply(GameEngine.Tool.PACKET_ANALYZER, ATTACKER);
         e.apply(GameEngine.Tool.FIREWALL, ATTACKER);
         assertEquals(0, e.getStars());
     }
@@ -102,6 +110,9 @@ public class GameEngineTest {
     @Test
     public void manyHintsAndMistakesLowerStars() {
         GameEngine e = new GameEngine(level(), GameEngine.Mode.CHALLENGE, 1, 1, 1);
+        // Stage 1: Flag threat first
+        e.apply(GameEngine.Tool.PACKET_ANALYZER, ATTACKER);
+
         e.apply(GameEngine.Tool.FIREWALL, INNOCENT);
         e.apply(GameEngine.Tool.FIREWALL, INNOCENT);
         e.useHint();

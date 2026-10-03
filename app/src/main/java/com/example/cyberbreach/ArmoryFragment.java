@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,11 +30,6 @@ public class ArmoryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         db = DbHelper.get(requireContext());
-        
-        binding.btnUpgradeFirewall.setOnClickListener(v -> upgrade("firewall"));
-        binding.btnUpgradeFilter.setOnClickListener(v -> upgrade("log_filter"));
-        binding.btnUpgradeAnalyzer.setOnClickListener(v -> upgrade("packet_analyzer"));
-        binding.btnUpgradePatch.setOnClickListener(v -> upgrade("patch_manager"));
     }
 
     @Override
@@ -41,27 +39,40 @@ public class ArmoryFragment extends Fragment {
     }
 
     private void refresh() {
-        binding.tvCredits.setText("Credits: " + db.getCredits());
-        binding.btnUpgradeFirewall.setText(upgradeLabel("Firewall", "firewall"));
-        binding.btnUpgradeFilter.setText(upgradeLabel("Log Filter", "log_filter"));
-        binding.btnUpgradeAnalyzer.setText(upgradeLabel("Packet Analyzer", "packet_analyzer"));
-        binding.btnUpgradePatch.setText(upgradeLabel("Patch Manager", "patch_manager"));
+        binding.tvCredits.setText(String.valueOf(db.getCredits()));
+        
+        setupToolCard(binding.cardAnalyzer.getRoot(), "Packet Analyzer", "packet_analyzer", android.R.drawable.ic_menu_search);
+        setupToolCard(binding.cardFirewall.getRoot(), "Firewall", "firewall", android.R.drawable.ic_menu_close_clear_cancel);
+        setupToolCard(binding.cardFilter.getRoot(), "Log Filter", "log_filter", android.R.drawable.ic_menu_sort_by_size);
+        setupToolCard(binding.cardPatch.getRoot(), "Patch Manager", "patch_manager", android.R.drawable.ic_menu_manage);
+        setupToolCard(binding.cardIsolation.getRoot(), "Isolation Framework", "isolation_framework", android.R.drawable.ic_lock_lock);
+        setupToolCard(binding.cardEmail.getRoot(), "Email Gateway", "email_gateway", android.R.drawable.ic_dialog_email);
+        setupToolCard(binding.cardCrypto.getRoot(), "Crypto Manager", "crypto_manager", android.R.drawable.ic_secure);
     }
 
-    private String upgradeLabel(String name, String toolId) {
+    private void setupToolCard(View cardRoot, String name, String toolId, int iconResId) {
+        ImageView ivIcon = cardRoot.findViewById(R.id.ivIcon);
+        TextView tvToolName = cardRoot.findViewById(R.id.tvToolName);
+        TextView tvToolDesc = cardRoot.findViewById(R.id.tvToolDesc);
+        Button btnUpgrade = cardRoot.findViewById(R.id.btnUpgrade);
+
+        ivIcon.setImageResource(iconResId);
+        tvToolName.setText(name);
+
         int tier = db.getToolTier(toolId);
         int cost = ToolEngine.getUpgradeCost(tier);
-        return getString(R.string.upgrade_format, name, tier, tier + 1, cost);
-    }
+        
+        tvToolDesc.setText(ToolEngine.getUpgradeCapabilityDescription(toolId, tier));
+        btnUpgrade.setText(cost + " C");
 
-    private void upgrade(String toolId) {
-        int cost = ToolEngine.getUpgradeCost(db.getToolTier(toolId));
-        if (db.upgradeTool(toolId, cost)) {
-            Toast.makeText(requireContext(), R.string.toast_upgraded, Toast.LENGTH_SHORT).show();
-            refresh();
-        } else {
-            Toast.makeText(requireContext(), R.string.toast_not_enough_credits, Toast.LENGTH_SHORT).show();
-        }
+        btnUpgrade.setOnClickListener(v -> {
+            if (db.upgradeTool(toolId, cost)) {
+                Toast.makeText(requireContext(), R.string.toast_upgraded, Toast.LENGTH_SHORT).show();
+                refresh();
+            } else {
+                Toast.makeText(requireContext(), R.string.toast_not_enough_credits, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
