@@ -346,10 +346,9 @@ public class RoomActivity extends AppCompatActivity {
         finished = true;
         stopLoops();
         sound.pauseAlarm();
-        sound.success();
         sound.vibrate(80);
         binding.tvStatus.setText(R.string.dialog_solved_title);
-        feedHandler.postDelayed(() -> openResult(true), 900);   // let the success sound play
+        feedHandler.postDelayed(() -> openResult(true), 900);
     }
 
     private void onGameOver() {
@@ -357,7 +356,6 @@ public class RoomActivity extends AppCompatActivity {
         finished = true;
         stopLoops();
         sound.pauseAlarm();
-        sound.alert();
         sound.vibrate(400);
         new MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.dialog_gameover_title)

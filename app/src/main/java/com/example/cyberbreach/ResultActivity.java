@@ -26,6 +26,7 @@ public class ResultActivity extends AppCompatActivity {
     private int hints;
     private int wrong;
     private String mode;
+    private com.example.cyberbreach.audio.SoundManager sound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +97,13 @@ public class ResultActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             saveResult(breakdown.totalStars);
+            PrefsManager prefs = new PrefsManager(this);
+            sound = new com.example.cyberbreach.audio.SoundManager(this, prefs.isMuted(), prefs.isHapticsEnabled());
+            if (solved) {
+                sound.success();
+            } else {
+                sound.alert();
+            }
         }
     }
 
@@ -126,5 +134,13 @@ public class ResultActivity extends AppCompatActivity {
         send.setType("text/plain");
         send.putExtra(Intent.EXTRA_TEXT, text);
         startActivity(Intent.createChooser(send, getString(R.string.share_chooser)));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (sound != null) {
+            sound.release();
+        }
     }
 }

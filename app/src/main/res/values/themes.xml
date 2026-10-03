@@ -38,5 +38,11 @@
         <item name="android:navigationBarColor">@color/cyber_surface_container</item>
     </style>
 
+    <style name="CyberToolbarTitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.1</item>
+    </style>
+
     <style name="Theme.CyberBreach" parent="Base.Theme.CyberBreach" />
 </resources>
