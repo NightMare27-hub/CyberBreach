@@ -31,6 +31,7 @@ public class LearnFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         binding.webLesson.getSettings().setJavaScriptEnabled(false);
+        binding.webLesson.setBackgroundColor(0); // Transparent background
         binding.webLesson.setWebViewClient(new WebViewClient());
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(

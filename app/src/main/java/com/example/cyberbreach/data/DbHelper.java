@@ -9,12 +9,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.example.cyberbreach.engine.StatsEngine;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class DbHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "cyberbreach.db";
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 3;
 
     private static DbHelper instance;
 
@@ -57,19 +59,24 @@ public class DbHelper extends SQLiteOpenHelper {
                 + "unlocked_at INTEGER NOT NULL)");
 
         db.execSQL("INSERT INTO player (id, credits) VALUES (1, 0)");
-        db.execSQL("INSERT INTO tool_upgrades (tool_id, tier) VALUES ('firewall', 1), ('log_filter', 1), ('packet_analyzer', 1), ('patch_manager', 1)");
+        db.execSQL("INSERT INTO tool_upgrades (tool_id, tier) VALUES "
+                + "('firewall', 1), ('log_filter', 1), ('packet_analyzer', 1), ('patch_manager', 1), "
+                + "('isolation_framework', 1), ('email_gateway', 1), ('crypto_manager', 1)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion < 2) {
-            // Add missing tool seeds
             db.execSQL("INSERT OR IGNORE INTO tool_upgrades (tool_id, tier) VALUES ('packet_analyzer', 1)");
             db.execSQL("INSERT OR IGNORE INTO tool_upgrades (tool_id, tier) VALUES ('patch_manager', 1)");
-            // Create achievements table
             db.execSQL("CREATE TABLE IF NOT EXISTS achievements ("
                     + "achievement_id TEXT PRIMARY KEY, "
                     + "unlocked_at INTEGER NOT NULL)");
+        }
+        if (oldVersion < 3) {
+            db.execSQL("INSERT OR IGNORE INTO tool_upgrades (tool_id, tier) VALUES ('isolation_framework', 1)");
+            db.execSQL("INSERT OR IGNORE INTO tool_upgrades (tool_id, tier) VALUES ('email_gateway', 1)");
+            db.execSQL("INSERT OR IGNORE INTO tool_upgrades (tool_id, tier) VALUES ('crypto_manager', 1)");
         }
     }
 
@@ -123,7 +130,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 "UPDATE player SET credits = credits + ? WHERE id = 1", new Object[]{amount});
     }
 
-    /** Deducts credits and raises the tier together, or does nothing. */
+    /** Deducts credits and raises the tier together, ensuring new tools are inserted automatically. */
     public boolean upgradeTool(String toolId, int cost) {
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
@@ -132,7 +139,13 @@ public class DbHelper extends SQLiteOpenHelper {
                 return false;   // no setTransactionSuccessful(), so nothing is committed
             }
             db.execSQL("UPDATE player SET credits = credits - ? WHERE id = 1", new Object[]{cost});
-            db.execSQL("UPDATE tool_upgrades SET tier = tier + 1 WHERE tool_id = ?", new Object[]{toolId});
+            
+            int currentTier = getToolTier(toolId);
+            ContentValues cv = new ContentValues();
+            cv.put("tool_id", toolId);
+            cv.put("tier", currentTier + 1);
+            db.insertWithOnConflict("tool_upgrades", null, cv, SQLiteDatabase.CONFLICT_REPLACE);
+
             db.setTransactionSuccessful();
             return true;
         } finally {
@@ -208,8 +221,8 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     /** Returns set of unlocked achievement IDs. */
-    public java.util.Set<String> getUnlockedAchievements() {
-        java.util.Set<String> set = new java.util.HashSet<>();
+    public Set<String> getUnlockedAchievements() {
+        Set<String> set = new HashSet<>();
         try (Cursor c = getReadableDatabase().query("achievements",
                 new String[]{"achievement_id"}, null, null, null, null, null)) {
             while (c.moveToNext()) {

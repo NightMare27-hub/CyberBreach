@@ -131,6 +131,36 @@ public class ProfileFragment extends Fragment {
         binding.tvCredits.setText(String.valueOf(db.getCredits()));
         binding.tvAttempts.setText(String.valueOf(db.getAttemptCount()));
         binding.ivRank.setImageResource(android.R.drawable.btn_star_big_on);
+
+        // Load Certifications
+        binding.certContainer.removeAllViews();
+        java.util.List<com.example.cyberbreach.engine.CertificationEngine.Certification> certs = 
+                com.example.cyberbreach.engine.CertificationEngine.getCertifications(db);
+        
+        for (com.example.cyberbreach.engine.CertificationEngine.Certification c : certs) {
+            View card = getLayoutInflater().inflate(R.layout.item_certification, binding.certContainer, false);
+            
+            android.widget.TextView tvName = card.findViewById(R.id.tvCertName);
+            android.widget.TextView tvDesc = card.findViewById(R.id.tvCertDesc);
+            android.widget.TextView tvProg = card.findViewById(R.id.tvProgress);
+            android.widget.ProgressBar pb = card.findViewById(R.id.pbProgress);
+            android.widget.ImageView iv = card.findViewById(R.id.ivBadge);
+
+            tvName.setText(c.name);
+            tvDesc.setText(c.description);
+            tvProg.setText(c.progress + "/" + c.maxProgress);
+            pb.setMax(c.maxProgress);
+            pb.setProgress(c.progress);
+
+            if (c.unlocked) {
+                iv.setImageResource(android.R.drawable.btn_star_big_on);
+                iv.setColorFilter(requireContext().getColor(R.color.soc_accent_cyan));
+            } else {
+                iv.setImageResource(android.R.drawable.btn_star_big_off);
+            }
+            
+            binding.certContainer.addView(card);
+        }
     }
 
     private void confirm(int titleRes, int messageRes, Runnable onConfirm) {
