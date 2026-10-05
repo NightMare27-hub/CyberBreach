@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { font-family: sans-serif; padding: 16px; line-height: 1.55; color: #DEE4EC; }
+  h2, h3 { color: #00FF9D; }
+  code { background: #1A2636; color: #FFB300; padding: 2px 5px; border-radius: 4px; }
+  b { color: #00D8FF; }
+</style>
+</head>
+<body>
+<h2>Ransomware</h2>
+<p><b>Ransomware</b> is a type of malware that encrypts a victim's files. The attacker then demands a ransom from the victim to restore access to the data.</p>
+<h3>How to Identify</h3>
+<ul>
+  <li>Watch for <code>SMB_WRITE</code> logs indicating mass file modification or encryption on network shares.</li>
+  <li>Unexpected outbound connections to unknown command-and-control (C2) servers.</li>
+</ul>
+<h3>Mitigation</h3>
+<p>Once detected, immediately <b>Isolate Host</b>. You must disconnect the infected machine from the network entirely (using the Isolation Framework) before the malware spreads to other endpoints.</p>
+</body>
+</html>
+

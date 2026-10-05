@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { font-family: sans-serif; padding: 16px; line-height: 1.55; color: #DEE4EC; }
+  h2, h3 { color: #00FF9D; }
+  code { background: #1A2636; color: #FFB300; padding: 2px 5px; border-radius: 4px; }
+  b { color: #00D8FF; }
+</style>
+</head>
+<body>
+<h2>SQL Injection (SQLi)</h2>
+<p><b>SQL Injection</b> occurs when an attacker interferes with the queries an application makes to its database. It allows attackers to view data they are not normally able to retrieve, such as passwords or sensitive company data.</p>
+<h3>How to Identify</h3>
+<ul>
+  <li>Look for <code>HTTP_500</code> server errors immediately after a web request.</li>
+  <li>Watch for query parameters that include suspicious characters like <code>'</code>, <code>OR 1=1</code>, or <code>--</code>.</li>
+</ul>
+<h3>Mitigation</h3>
+<p>The standard fix for SQLi vulnerabilities is to apply a <b>Patch</b> to the application code to use parameterized queries, which prevents user input from being treated as executable code.</p>
+</body>
+</html>
+

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { font-family: sans-serif; padding: 16px; line-height: 1.55; color: #DEE4EC; }
+  h2, h3 { color: #00FF9D; }
+  code { background: #1A2636; color: #FFB300; padding: 2px 5px; border-radius: 4px; }
+  b { color: #00D8FF; }
+</style>
+</head>
+<body>
+<h2>Cross-Site Scripting (XSS)</h2>
+<p><b>Cross-Site Scripting (XSS)</b> is a vulnerability where attackers inject malicious scripts into trusted websites. These scripts then execute in the victim's browser, allowing attackers to steal session cookies or hijack user sessions.</p>
+<h3>How to Identify</h3>
+<ul>
+  <li>Look for <code>HTTP_REQ</code> logs where the payload or URL contains HTML tags like <code>&lt;script&gt;</code> or <code>javascript:</code>.</li>
+  <li>Common targets are search bars, comment sections, or profile inputs.</li>
+</ul>
+<h3>Mitigation</h3>
+<p>To stop XSS, you must <b>Patch</b> the web application to properly encode/sanitize all user inputs before displaying them back on the screen.</p>
+</body>
+</html>
+

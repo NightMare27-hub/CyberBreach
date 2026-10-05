@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { font-family: sans-serif; padding: 16px; line-height: 1.55; color: #DEE4EC; }
+  h2, h3 { color: #00FF9D; }
+  code { background: #1A2636; color: #FFB300; padding: 2px 5px; border-radius: 4px; }
+  b { color: #00D8FF; }
+</style>
+</head>
+<body>
+<h2>DDoS Attacks</h2>
+<p>A <b>Distributed Denial-of-Service (DDoS)</b> attack is a malicious attempt to disrupt the normal traffic of a targeted server by overwhelming it with a flood of Internet traffic.</p>
+<h3>How to Identify</h3>
+<ul>
+  <li>Look for thousands of simultaneous requests from the same IP or multiple IPs.</li>
+  <li>Watch for <code>SYN_FLOOD</code>, <code>UDP_FLOOD</code>, or excessive <code>HTTP_GET</code> logs in rapid succession.</li>
+</ul>
+<h3>Mitigation</h3>
+<p>The most immediate response is to <b>Block IP</b> at the firewall level for the offending source. In large-scale attacks, traffic must be routed through scrubbing centers or CDNs.</p>
+</body>
+</html>
+

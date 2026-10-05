@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { font-family: sans-serif; padding: 16px; line-height: 1.55; color: #DEE4EC; }
+  h2, h3 { color: #00FF9D; }
+  code { background: #1A2636; color: #FFB300; padding: 2px 5px; border-radius: 4px; }
+  b { color: #00D8FF; }
+</style>
+</head>
+<body>
+<h2>Man-in-the-Middle (MitM)</h2>
+<p>A <b>Man-in-the-Middle (MitM)</b> attack occurs when a malicious actor secretly intercepts and possibly alters the communication between two parties who believe they are directly communicating with each other.</p>
+<h3>How to Identify</h3>
+<ul>
+  <li>Look for <code>ARP_REPLY</code> logs indicating unexpected ARP broadcasts, or duplicate MAC addresses answering for the network gateway (ARP Spoofing).</li>
+  <li>Sudden downgrades from encrypted <code>HTTPS</code> traffic to unencrypted <code>HTTP</code> traffic.</li>
+</ul>
+<h3>Mitigation</h3>
+<p>Activate the <b>Crypto Manager</b> to <b>Enable Encryption</b> (like HTTPS, VPNs, or IPSec) and enforce certificate pinning, rendering intercepted data useless to the attacker.</p>
+</body>
+</html>
+

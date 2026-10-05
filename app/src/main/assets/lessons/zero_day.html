@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { font-family: sans-serif; padding: 16px; line-height: 1.55; color: #DEE4EC; }
+  h2, h3 { color: #00FF9D; }
+  code { background: #1A2636; color: #FFB300; padding: 2px 5px; border-radius: 4px; }
+  b { color: #00D8FF; }
+</style>
+</head>
+<body>
+<h2>Zero-Day Exploits</h2>
+<p>A <b>Zero-Day</b> is a software vulnerability that is unknown to the vendor. Because there is no existing patch on "day zero", it is highly dangerous and difficult to detect.</p>
+<h3>How to Identify</h3>
+<ul>
+  <li>Look for <code>EXPLOIT_ATTEMPT</code> logs showing unusual memory manipulation techniques like "heap spraying" or "buffer overflows".</li>
+  <li>Anomalous execution paths originating from normally benign software like a PDF reader or web browser.</li>
+</ul>
+<h3>Mitigation</h3>
+<p>Once identified and a hotfix is released, you must deploy a <b>Patch</b> immediately across the infrastructure to seal the vulnerability.</p>
+</body>
+</html>
+

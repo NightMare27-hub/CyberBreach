@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { font-family: sans-serif; padding: 16px; line-height: 1.55; color: #DEE4EC; }
+  h2, h3 { color: #00FF9D; }
+  code { background: #1A2636; color: #FFB300; padding: 2px 5px; border-radius: 4px; }
+  b { color: #00D8FF; }
+</style>
+</head>
+<body>
+<h2>Phishing</h2>
+<p><b>Phishing</b> is a social engineering attack where malicious actors deceive users into revealing sensitive information or installing malware, often by pretending to be a legitimate entity via email.</p>
+<h3>How to Identify</h3>
+<ul>
+  <li>Look for <code>SMTP_IN</code> logs from external sources attempting to spoof internal domains.</li>
+  <li>Subject lines or payloads often mimic IT support, urgent invoices, or password reset alerts.</li>
+</ul>
+<h3>Mitigation</h3>
+<p>Deploy the <b>Email Gateway</b> tool to <b>Quarantine</b> the malicious email before the user clicks on any embedded links or opens attachments.</p>
+</body>
+</html>
+

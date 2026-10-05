@@ -120,12 +120,26 @@
         <item>What is a port?</item>
         <item>Brute-force attacks</item>
         <item>Software patching</item>
+        <item>SQL Injection (SQLi)</item>
+        <item>Cross-Site Scripting (XSS)</item>
+        <item>DDoS Attacks</item>
+        <item>Ransomware</item>
+        <item>Phishing</item>
+        <item>Zero-Day Exploits</item>
+        <item>Man-in-the-Middle (MitM)</item>
     </string-array>
 
     <string-array name="lesson_files">
         <item>ports.html</item>
         <item>bruteforce.html</item>
         <item>patching.html</item>
+        <item>sql_injection.html</item>
+        <item>xss.html</item>
+        <item>ddos.html</item>
+        <item>ransomware.html</item>
+        <item>phishing.html</item>
+        <item>zero_day.html</item>
+        <item>mitm.html</item>
     </string-array>
 
     <string-array name="tool_array">
