@@ -20,6 +20,35 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        
+        com.example.cyberbreach.data.DbHelper db = com.example.cyberbreach.data.DbHelper.get(requireContext());
+        int stars = db.getTotalStars();
+        
+        binding.tvRankText.setText(com.example.cyberbreach.data.DbHelper.rankForStars(stars));
+        binding.tvCredits.setText(String.valueOf(db.getCredits()));
+
+        binding.btnDailyBounties.setOnClickListener(v -> {
+            // Tell MainActivity to switch to "Play" tab (index 1)
+            ((com.example.cyberbreach.MainActivity) requireActivity()).switchToTab(1);
+        });
+
+        binding.btnContinueTraining.setOnClickListener(v -> {
+            // Tell MainActivity to switch to "Play" tab (index 1)
+            ((com.example.cyberbreach.MainActivity) requireActivity()).switchToTab(1);
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        com.example.cyberbreach.data.DbHelper db = com.example.cyberbreach.data.DbHelper.get(requireContext());
+        binding.tvRankText.setText(com.example.cyberbreach.data.DbHelper.rankForStars(db.getTotalStars()));
+        binding.tvCredits.setText(String.valueOf(db.getCredits()));
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;

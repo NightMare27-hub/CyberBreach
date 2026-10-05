@@ -1,79 +1,200 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical">
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:text="Home Dashboard (WIP)" android:textAppearance="?attr/textAppearanceHeadline5" />
-    android:orientation="vertical"
-    android:padding="16dp">
-
-    <TextView
-        android:id="@+id/tvWelcomeHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Agent Dashboard"
-        android:textAppearance="?attr/textAppearanceHeadline4"
-        android:layout_marginBottom="24dp" />
-
-    <ImageView
-        android:id="@+id/ivRankBadge"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginBottom="8dp"
-        android:src="@android:drawable/btn_star_big_on" />
-
-    <TextView
-        android:id="@+id/tvRankText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Rank: Beginner"
-        android:textAppearance="?attr/textAppearanceHeadline6"
-        android:layout_marginBottom="32dp" />
+    android:background="@color/soc_background"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginBottom="48dp">
-        
-        <LinearLayout
-            android:layout_width="0dp"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header -->
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Stars" />
-            <TextView android:id="@+id/tvStars" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textAppearance="?attr/textAppearanceHeadline6" />
+            android:text="CYBER COMMAND // DASHBOARD"
+            android:textColor="@color/soc_primary"
+            android:fontFamily="monospace"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Network Status Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="@color/soc_surface"
+            app:strokeColor="@color/soc_surface_stroke"
+            app:strokeWidth="1dp"
+            app:cardCornerRadius="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="GLOBAL THREAT LEVEL"
+                    android:textColor="@color/soc_text_secondary"
+                    android:fontFamily="monospace"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="8dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@android:drawable/ic_dialog_alert"
+                        app:tint="@color/soc_warning" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:text="ELEVATED"
+                        android:textColor="@color/soc_warning"
+                        android:textSize="28sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Multiple brute-force attempts detected across external subnets. Analysts required immediately."
+                    android:textColor="@color/soc_text_secondary"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Quick Stats Grid -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="24dp">
+
+            <!-- Credits -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                app:cardBackgroundColor="@color/soc_surface"
+                app:strokeColor="@color/soc_surface_stroke"
+                app:strokeWidth="1dp"
+                app:cardCornerRadius="8dp">
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    android:gravity="center">
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="CREDITS"
+                        android:textColor="@color/soc_text_secondary"
+                        android:fontFamily="monospace"
+                        android:textSize="10sp" />
+                        
+                    <TextView
+                        android:id="@+id/tvCredits"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@color/soc_accent_cyan"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Rank -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                app:cardBackgroundColor="@color/soc_surface"
+                app:strokeColor="@color/soc_surface_stroke"
+                app:strokeWidth="1dp"
+                app:cardCornerRadius="8dp">
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    android:gravity="center">
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="CLEARANCE"
+                        android:textColor="@color/soc_text_secondary"
+                        android:fontFamily="monospace"
+                        android:textSize="10sp" />
+                        
+                    <TextView
+                        android:id="@+id/tvRankText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Novice"
+                        android:textColor="@color/soc_primary"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:singleLine="true" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="0dp"
+        <!-- Quick Actions -->
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Credits" />
-            <TextView android:id="@+id/tvCredits" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textAppearance="?attr/textAppearanceHeadline6" />
-        </LinearLayout>
+            android:text="ACTIVE DIRECTIVES"
+            android:textColor="@color/soc_text_secondary"
+            android:fontFamily="monospace"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Attempts" />
-            <TextView android:id="@+id/tvAttempts" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textAppearance="?attr/textAppearanceHeadline6" />
-        </LinearLayout>
+        <Button
+            android:id="@+id/btnDailyBounties"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="12dp"
+            android:text="ENGAGE DAILY BOUNTIES"
+            android:textColor="@color/soc_background"
+            android:background="@drawable/bg_neon_button"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnContinueTraining"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="ACCESS CORE TRAINING"
+            android:textColor="@color/soc_primary"
+            app:strokeColor="@color/soc_primary"
+            android:textStyle="bold" />
+
     </LinearLayout>
-
-    <Button
-        android:id="@+id/btnContinueTraining"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Continue Training" />
-
-</LinearLayout>
+</ScrollView>

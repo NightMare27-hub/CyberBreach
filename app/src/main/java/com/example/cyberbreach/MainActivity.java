@@ -48,4 +48,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void switchToTab(int index) {
+        binding.pager.setCurrentItem(index);
+    }
 }
