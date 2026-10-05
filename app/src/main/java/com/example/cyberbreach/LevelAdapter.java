@@ -76,8 +76,10 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.VH> {
             h.b.getRoot().setOnClickListener(null);
             h.b.getRoot().setClickable(false);
             
-            // Remove margin/padding if desired, or set a background
-            h.b.getRoot().setBackgroundResource(0); // Transparent
+            // Modify card visuals for header
+            h.b.getRoot().setCardBackgroundColor(0x00000000);
+            h.b.getRoot().setStrokeColor(0x00000000);
+            h.b.getRoot().setCardElevation(0f);
             return;
         }
 
@@ -115,10 +117,10 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.VH> {
         h.b.ivLock.setVisibility(unlocked ? View.GONE : View.VISIBLE);
         h.b.getRoot().setAlpha(unlocked ? 1f : 0.55f);
 
-        // Restore background for regular items
-        android.util.TypedValue tv = new android.util.TypedValue();
-        h.itemView.getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground, tv, true);
-        h.b.getRoot().setBackgroundResource(tv.resourceId);
+        // Restore card visuals for regular item
+        h.b.getRoot().setCardBackgroundColor(h.itemView.getContext().getColor(R.color.soc_surface));
+        h.b.getRoot().setStrokeColor(h.itemView.getContext().getColor(R.color.soc_surface_stroke));
+        h.b.getRoot().setCardElevation(2f);
 
         final boolean isUnlocked = unlocked;
         h.b.getRoot().setOnClickListener(v -> {

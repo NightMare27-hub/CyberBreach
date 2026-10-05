@@ -16,7 +16,7 @@ import java.util.Set;
 public class DbHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "cyberbreach.db";
-    private static final int DB_VERSION = 3;
+    private static final int DB_VERSION = 4;
 
     private static DbHelper instance;
 
@@ -79,6 +79,10 @@ public class DbHelper extends SQLiteOpenHelper {
             db.execSQL("INSERT OR IGNORE INTO tool_upgrades (tool_id, tier) VALUES ('isolation_framework', 0)");
             db.execSQL("INSERT OR IGNORE INTO tool_upgrades (tool_id, tier) VALUES ('email_gateway', 0)");
             db.execSQL("INSERT OR IGNORE INTO tool_upgrades (tool_id, tier) VALUES ('crypto_manager', 0)");
+        }
+        if (oldVersion < 4) {
+            // Lock tools that were previously unlocked by default (but preserve upgrades if tier > 1)
+            db.execSQL("UPDATE tool_upgrades SET tier = 0 WHERE tier = 1 AND tool_id NOT IN ('firewall', 'packet_analyzer')");
         }
     }
 
