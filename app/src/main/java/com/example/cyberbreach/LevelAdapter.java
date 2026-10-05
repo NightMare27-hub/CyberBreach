@@ -63,8 +63,41 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.VH> {
     @Override
     public void onBindViewHolder(@NonNull VH h, int position) {
         Level level = levels.get(position);
+        
+        if (level.id != null && level.id.startsWith("HEADER_")) {
+            h.b.tvTitle.setText(level.title);
+            h.b.tvTitle.setTextColor(h.itemView.getContext().getColor(R.color.soc_accent_cyan));
+            h.b.tvTitle.setTextSize(16f);
+            h.b.tvMeta.setVisibility(View.GONE);
+            h.b.tvStars.setVisibility(View.GONE);
+            h.b.tvBest.setVisibility(View.GONE);
+            h.b.ivLock.setVisibility(View.GONE);
+            h.b.getRoot().setAlpha(1f);
+            h.b.getRoot().setOnClickListener(null);
+            h.b.getRoot().setClickable(false);
+            
+            // Remove margin/padding if desired, or set a background
+            h.b.getRoot().setBackgroundResource(0); // Transparent
+            return;
+        }
+
+        h.b.tvMeta.setVisibility(View.VISIBLE);
+        h.b.tvStars.setVisibility(View.VISIBLE);
+        h.b.tvBest.setVisibility(View.VISIBLE);
+        h.b.tvTitle.setTextColor(h.itemView.getContext().getColor(R.color.soc_text_primary));
+        h.b.tvTitle.setTextSize(18f);
+
         DbHelper.Progress p = progress.get(level.id);
-        boolean unlocked = position == 0 || (p != null && p.unlocked);
+        
+        // Find previous actual level to determine unlock status (not header)
+        boolean unlocked = false;
+        if (position == 0 || (position == 1 && levels.get(0).id.startsWith("HEADER"))) {
+            unlocked = true;
+        } else {
+            // Find last level
+            unlocked = (p != null && p.unlocked);
+        }
+
         int stars = p != null ? p.stars : 0;
         int best = p != null ? p.bestTimeSec : 0;
 
@@ -82,8 +115,14 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.VH> {
         h.b.ivLock.setVisibility(unlocked ? View.GONE : View.VISIBLE);
         h.b.getRoot().setAlpha(unlocked ? 1f : 0.55f);
 
+        // Restore background for regular items
+        android.util.TypedValue tv = new android.util.TypedValue();
+        h.itemView.getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground, tv, true);
+        h.b.getRoot().setBackgroundResource(tv.resourceId);
+
+        final boolean isUnlocked = unlocked;
         h.b.getRoot().setOnClickListener(v -> {
-            if (unlocked) {
+            if (isUnlocked) {
                 listener.onClick(level);
             } else {
                 Toast.makeText(v.getContext(), R.string.toast_level_locked, Toast.LENGTH_SHORT).show();

@@ -180,15 +180,31 @@ public class RoomActivity extends AppCompatActivity {
     // ---------- UI setup ----------
 
     private void setupToolSpinner() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this, R.array.tool_array, android.R.layout.simple_spinner_item);
+        DbHelper db = DbHelper.get(this);
+        List<String> names = new ArrayList<>();
+        final List<GameEngine.Tool> activeTools = new ArrayList<>();
+        final List<Integer> activeIcons = new ArrayList<>();
+        String[] allNames = getResources().getStringArray(R.array.tool_array);
+        
+        for (int i = 0; i < GameEngine.Tool.values().length; i++) {
+            GameEngine.Tool t = GameEngine.Tool.values()[i];
+            int tier = db.getToolTier(t.name().toLowerCase(Locale.US));
+            if (tier > 0) {
+                names.add(allNames[i]);
+                activeTools.add(t);
+                activeIcons.add(toolIcons[i]);
+            }
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, names);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spTool.setAdapter(adapter);
+        
         binding.spTool.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedTool = GameEngine.Tool.values()[position];
-                binding.ivTool.setImageResource(toolIcons[position]);
+                selectedTool = activeTools.get(position);
+                binding.ivTool.setImageResource(activeIcons.get(position));
                 sound.click();
             }
 

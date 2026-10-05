@@ -59,24 +59,26 @@ public class DbHelper extends SQLiteOpenHelper {
                 + "unlocked_at INTEGER NOT NULL)");
 
         db.execSQL("INSERT INTO player (id, credits) VALUES (1, 0)");
+        // Only Firewall and Packet Analyzer are unlocked initially. Others are tier 0 (locked).
         db.execSQL("INSERT INTO tool_upgrades (tool_id, tier) VALUES "
-                + "('firewall', 1), ('log_filter', 1), ('packet_analyzer', 1), ('patch_manager', 1), "
-                + "('isolation_framework', 1), ('email_gateway', 1), ('crypto_manager', 1)");
+                + "('firewall', 1), ('packet_analyzer', 1), "
+                + "('log_filter', 0), ('patch_manager', 0), "
+                + "('isolation_framework', 0), ('email_gateway', 0), ('crypto_manager', 0)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion < 2) {
             db.execSQL("INSERT OR IGNORE INTO tool_upgrades (tool_id, tier) VALUES ('packet_analyzer', 1)");
-            db.execSQL("INSERT OR IGNORE INTO tool_upgrades (tool_id, tier) VALUES ('patch_manager', 1)");
+            db.execSQL("INSERT OR IGNORE INTO tool_upgrades (tool_id, tier) VALUES ('patch_manager', 0)");
             db.execSQL("CREATE TABLE IF NOT EXISTS achievements ("
                     + "achievement_id TEXT PRIMARY KEY, "
                     + "unlocked_at INTEGER NOT NULL)");
         }
         if (oldVersion < 3) {
-            db.execSQL("INSERT OR IGNORE INTO tool_upgrades (tool_id, tier) VALUES ('isolation_framework', 1)");
-            db.execSQL("INSERT OR IGNORE INTO tool_upgrades (tool_id, tier) VALUES ('email_gateway', 1)");
-            db.execSQL("INSERT OR IGNORE INTO tool_upgrades (tool_id, tier) VALUES ('crypto_manager', 1)");
+            db.execSQL("INSERT OR IGNORE INTO tool_upgrades (tool_id, tier) VALUES ('isolation_framework', 0)");
+            db.execSQL("INSERT OR IGNORE INTO tool_upgrades (tool_id, tier) VALUES ('email_gateway', 0)");
+            db.execSQL("INSERT OR IGNORE INTO tool_upgrades (tool_id, tier) VALUES ('crypto_manager', 0)");
         }
     }
 
@@ -198,8 +200,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     public int getToolTier(String toolId) {
-        int tier = queryInt("SELECT tier FROM tool_upgrades WHERE tool_id = ?", new String[]{toolId});
-        return Math.max(1, tier);
+        return queryInt("SELECT tier FROM tool_upgrades WHERE tool_id = ?", new String[]{toolId});
     }
 
     private int queryInt(String sql, String[] args) {

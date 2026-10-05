@@ -66,7 +66,21 @@ public class PlayFragment extends Fragment {
             public void onLoaded(List<Level> levels, LevelRepository.Source source) {
                 if (binding == null) return;   // the view was destroyed while loading
                 LevelStore.set(levels);
-                adapter.setLevels(levels);
+                
+                // Group by track
+                java.util.List<Level> groupedLevels = new java.util.ArrayList<>();
+                String currentTrack = "";
+                for (Level lvl : levels) {
+                    if (lvl.track != null && !lvl.track.equals(currentTrack)) {
+                        currentTrack = lvl.track;
+                        Level header = new Level("HEADER_" + currentTrack, "TRACK: " + currentTrack.toUpperCase(java.util.Locale.US),
+                                currentTrack, "", "", 0, "", "", "", "", new java.util.ArrayList<>(), new java.util.ArrayList<>());
+                        groupedLevels.add(header);
+                    }
+                    groupedLevels.add(lvl);
+                }
+                
+                adapter.setLevels(groupedLevels);
                 binding.progressLoading.setVisibility(View.GONE);
                 binding.tvSource.setText(sourceLabel(source));
             }

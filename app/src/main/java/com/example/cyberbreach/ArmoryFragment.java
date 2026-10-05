@@ -63,7 +63,12 @@ public class ArmoryFragment extends Fragment {
         int cost = ToolEngine.getUpgradeCost(tier);
         
         tvToolDesc.setText(ToolEngine.getUpgradeCapabilityDescription(toolId, tier));
-        btnUpgrade.setText(cost + " C");
+        
+        if (tier == 0) {
+            btnUpgrade.setText("UNLOCK\n" + cost + " C");
+        } else {
+            btnUpgrade.setText("UPGRADE\n" + cost + " C");
+        }
 
         btnUpgrade.setOnClickListener(v -> {
             if (db.upgradeTool(toolId, cost)) {

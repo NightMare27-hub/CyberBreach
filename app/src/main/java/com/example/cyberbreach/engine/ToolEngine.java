@@ -20,12 +20,15 @@ public class ToolEngine {
 
     /** Calculates credit cost to upgrade a tool from its current tier. */
     public static int getUpgradeCost(int currentTier) {
-        int tier = Math.max(1, currentTier);
-        return BASE_UPGRADE_COST_CREDITS * tier;
+        if (currentTier == 0) return 50; // Cost to unlock a new tool
+        return BASE_UPGRADE_COST_CREDITS * currentTier;
     }
 
     /** Generates a descriptive summary label for tool upgrade buttons in UI. */
     public static String getUpgradeCapabilityDescription(String toolName, int currentTier) {
+        if (currentTier == 0) {
+            return "LOCKED (Unlock to gain capabilities)";
+        }
         int nextTier = currentTier + 1;
         switch (toolName.toLowerCase()) {
             case "firewall":
