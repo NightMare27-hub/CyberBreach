@@ -175,7 +175,8 @@
         android:gravity="center"
         android:orientation="vertical"
         android:clickable="true"
-        android:focusable="true">
+        android:focusable="true"
+        android:elevation="24dp">
 
         <TextView
             android:id="@+id/tvOverlay"
