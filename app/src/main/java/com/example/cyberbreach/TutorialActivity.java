@@ -17,6 +17,7 @@ public class TutorialActivity extends AppCompatActivity {
 
     private ActivityTutorialBinding binding;
     private int step = 0;
+    private LinearLayout maliciousRow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +26,6 @@ public class TutorialActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         binding.overlayLayer.setOnClickListener(v -> advanceStep());
-        binding.bottomBar.setOnClickListener(v -> handleToolClick());
     }
 
     private void advanceStep() {
@@ -38,25 +38,37 @@ public class TutorialActivity extends AppCompatActivity {
                 binding.overlayLayer.postDelayed(this::advanceStep, 1000);
                 break;
             case 2:
-                addLog("00:03", "10.0.0.55", "SYN_FLOOD");
-                binding.tvOverlay.setText("Anomalous traffic detected!\n\nStep 1: Identify\nTap the Tool bar below to select your Packet Analyzer.");
+                maliciousRow = addLog("00:03", "10.0.0.55", "SYN_FLOOD");
+                binding.tvOverlay.setText("Anomalous traffic detected!\n\nStep 1: Identify\n[ TAP ANYWHERE TO SELECT PACKET ANALYZER ]");
                 binding.overlayLayer.setVisibility(View.VISIBLE);
                 break;
             case 3:
-                // Expected user to tap tool bar
+                binding.ivTool.setImageResource(android.R.drawable.ic_menu_search);
+                binding.tvTool.setText("Packet Analyzer");
+                binding.tvOverlay.setText("Analyzer selected.\n\n[ TAP ANYWHERE TO FLAG THE ATTACKER ]");
                 break;
             case 4:
-                // User tapped malicious row with Analyzer
-                binding.tvOverlay.setText("Target Flagged!\n\nStep 2: Mitigate\nTap the Tool bar again to select your Firewall.");
-                binding.overlayLayer.setVisibility(View.VISIBLE);
+                if (maliciousRow != null) {
+                    maliciousRow.setBackgroundColor(getColor(R.color.soc_warning));
+                    for (int i = 0; i < maliciousRow.getChildCount(); i++) {
+                        ((TextView) maliciousRow.getChildAt(i)).setTextColor(getColor(R.color.soc_background));
+                    }
+                }
+                binding.tvOverlay.setText("Target Flagged!\n\nStep 2: Mitigate\n[ TAP ANYWHERE TO SELECT FIREWALL ]");
                 break;
             case 5:
-                // Expected user to tap tool bar
+                binding.ivTool.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
+                binding.tvTool.setText("Firewall");
+                binding.tvOverlay.setText("Firewall selected.\n\n[ TAP ANYWHERE TO BLOCK THE IP ]");
                 break;
             case 6:
-                // User tapped malicious row with Firewall
-                binding.tvOverlay.setText("Incident Contained!\n\nYou're ready to deploy.\nTap to enter the Dashboard.");
-                binding.overlayLayer.setVisibility(View.VISIBLE);
+                if (maliciousRow != null) {
+                    maliciousRow.setBackgroundColor(getColor(R.color.soc_primary));
+                    for (int i = 0; i < maliciousRow.getChildCount(); i++) {
+                        ((TextView) maliciousRow.getChildAt(i)).setTextColor(getColor(R.color.soc_background));
+                    }
+                }
+                binding.tvOverlay.setText("Incident Contained!\n\nYou're ready to deploy.\n[ TAP TO ENTER THE DASHBOARD ]");
                 break;
             case 7:
                 finishTutorial();
@@ -64,53 +76,7 @@ public class TutorialActivity extends AppCompatActivity {
         }
     }
 
-    private void handleToolClick() {
-        if (step == 2) {
-            binding.ivTool.setImageResource(android.R.drawable.ic_menu_search);
-            binding.tvTool.setText("Packet Analyzer");
-            binding.tvOverlay.setText("Analyzer ready.\nNow tap the SYN_FLOOD log in the list to FLAG the attacker.");
-            step = 3;
-        } else if (step == 4) {
-            binding.ivTool.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
-            binding.tvTool.setText("Firewall");
-            binding.tvOverlay.setText("Firewall ready.\nNow tap the flagged orange log to BLOCK the IP.");
-            step = 5;
-        } else {
-            Toast.makeText(this, "Follow the instructions on screen!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void handleRowClick(View row, String event) {
-        if (step == 3 && event.equals("SYN_FLOOD")) {
-            row.setBackgroundColor(getColor(R.color.soc_warning));
-            
-            // set text color to background for all child views
-            if (row instanceof LinearLayout) {
-                LinearLayout ll = (LinearLayout) row;
-                for (int i=0; i<ll.getChildCount(); i++) {
-                    ((TextView)ll.getChildAt(i)).setTextColor(getColor(R.color.soc_background));
-                }
-            }
-            
-            step = 3; 
-            advanceStep();
-        } else if (step == 5 && event.equals("SYN_FLOOD")) {
-            // Restore styling to indicate success/blocked
-            row.setBackgroundColor(getColor(R.color.soc_primary)); 
-            if (row instanceof LinearLayout) {
-                LinearLayout ll = (LinearLayout) row;
-                for (int i=0; i<ll.getChildCount(); i++) {
-                    ((TextView)ll.getChildAt(i)).setTextColor(getColor(R.color.soc_background));
-                }
-            }
-            step = 5; 
-            advanceStep();
-        } else {
-            Toast.makeText(this, "That's not the right target!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void addLog(String time, String src, String event) {
+    private LinearLayout addLog(String time, String src, String event) {
         LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.HORIZONTAL);
         
@@ -118,16 +84,12 @@ public class TutorialActivity extends AppCompatActivity {
         getTheme().resolveAttribute(android.R.attr.selectableItemBackground, tvAttr, true);
         row.setBackgroundResource(tvAttr.resourceId);
         
-        TextView t1 = cell(time);
-        TextView t2 = cell(src);
-        TextView t3 = cell(event);
+        row.addView(cell(time));
+        row.addView(cell(src));
+        row.addView(cell(event));
         
-        row.addView(t1);
-        row.addView(t2);
-        row.addView(t3);
-        
-        row.setOnClickListener(v -> handleRowClick(row, event));
         binding.llLogs.addView(row);
+        return row;
     }
     
     private TextView cell(String text) {
