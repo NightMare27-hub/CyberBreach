@@ -45,7 +45,8 @@ public class TutorialActivity extends AppCompatActivity {
                 maliciousRow = addLog("00:03", "10.0.0.55", "SYN_FLOOD");
                 binding.tvOverlay.setText("Anomalous traffic detected!\n\nStep 1: Identify\nTap the Tool bar below to select your Packet Analyzer.");
                 binding.overlayLayer.setVisibility(View.VISIBLE);
-                // Allow clicks to pass through to the real UI
+                // Allow clicks to pass through to the real UI by removing the listener
+                binding.overlayLayer.setOnClickListener(null);
                 binding.overlayLayer.setClickable(false);
                 binding.overlayLayer.setFocusable(false);
                 break;
