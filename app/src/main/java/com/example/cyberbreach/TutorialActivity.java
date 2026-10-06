@@ -25,8 +25,18 @@ public class TutorialActivity extends AppCompatActivity {
         binding = ActivityTutorialBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Entire tutorial is driven by tapping the overlay
-        binding.overlayLayer.setOnClickListener(v -> advanceStep());
+        // Entire tutorial is driven by tapping anywhere on the screen
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(android.view.MotionEvent ev) {
+        if (ev.getAction() == android.view.MotionEvent.ACTION_DOWN) {
+            if (binding.overlayLayer.getVisibility() == View.VISIBLE) {
+                advanceStep();
+                return true;
+            }
+        }
+        return super.dispatchTouchEvent(ev);
     }
 
     private void advanceStep() {
