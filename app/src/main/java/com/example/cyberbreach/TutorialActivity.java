@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +24,7 @@ public class TutorialActivity extends AppCompatActivity {
         binding = ActivityTutorialBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.tvOverlay.setOnClickListener(v -> advanceStep());
+        binding.overlayLayer.setOnClickListener(v -> advanceStep());
         binding.bottomBar.setOnClickListener(v -> handleToolClick());
     }
 
@@ -31,15 +32,15 @@ public class TutorialActivity extends AppCompatActivity {
         step++;
         switch (step) {
             case 1:
-                binding.tvOverlay.setVisibility(View.GONE);
+                binding.overlayLayer.setVisibility(View.GONE);
                 addLog("00:01", "192.168.1.10", "HTTP_GET");
                 addLog("00:02", "192.168.1.12", "HTTP_GET");
-                binding.tvOverlay.postDelayed(this::advanceStep, 1000);
+                binding.overlayLayer.postDelayed(this::advanceStep, 1000);
                 break;
             case 2:
                 addLog("00:03", "10.0.0.55", "SYN_FLOOD");
                 binding.tvOverlay.setText("Anomalous traffic detected!\n\nStep 1: Identify\nTap the Tool bar below to select your Packet Analyzer.");
-                binding.tvOverlay.setVisibility(View.VISIBLE);
+                binding.overlayLayer.setVisibility(View.VISIBLE);
                 break;
             case 3:
                 // Expected user to tap tool bar
@@ -47,7 +48,7 @@ public class TutorialActivity extends AppCompatActivity {
             case 4:
                 // User tapped malicious row with Analyzer
                 binding.tvOverlay.setText("Target Flagged!\n\nStep 2: Mitigate\nTap the Tool bar again to select your Firewall.");
-                binding.tvOverlay.setVisibility(View.VISIBLE);
+                binding.overlayLayer.setVisibility(View.VISIBLE);
                 break;
             case 5:
                 // Expected user to tap tool bar
@@ -55,7 +56,7 @@ public class TutorialActivity extends AppCompatActivity {
             case 6:
                 // User tapped malicious row with Firewall
                 binding.tvOverlay.setText("Incident Contained!\n\nYou're ready to deploy.\nTap to enter the Dashboard.");
-                binding.tvOverlay.setVisibility(View.VISIBLE);
+                binding.overlayLayer.setVisibility(View.VISIBLE);
                 break;
             case 7:
                 finishTutorial();
@@ -79,16 +80,30 @@ public class TutorialActivity extends AppCompatActivity {
         }
     }
 
-    private void handleRowClick(TextView row, String event) {
+    private void handleRowClick(View row, String event) {
         if (step == 3 && event.equals("SYN_FLOOD")) {
             row.setBackgroundColor(getColor(R.color.soc_warning));
-            row.setTextColor(getColor(R.color.soc_background));
-            step = 3; // Keep it at 3 until advanceStep increments it to 4
+            
+            // set text color to background for all child views
+            if (row instanceof LinearLayout) {
+                LinearLayout ll = (LinearLayout) row;
+                for (int i=0; i<ll.getChildCount(); i++) {
+                    ((TextView)ll.getChildAt(i)).setTextColor(getColor(R.color.soc_background));
+                }
+            }
+            
+            step = 3; 
             advanceStep();
         } else if (step == 5 && event.equals("SYN_FLOOD")) {
-            row.setBackgroundColor(getColor(R.color.soc_primary)); // Reset
-            row.setTextColor(getColor(R.color.soc_background));
-            step = 5; // Keep it at 5 until advanceStep increments it to 6
+            // Restore styling to indicate success/blocked
+            row.setBackgroundColor(getColor(R.color.soc_primary)); 
+            if (row instanceof LinearLayout) {
+                LinearLayout ll = (LinearLayout) row;
+                for (int i=0; i<ll.getChildCount(); i++) {
+                    ((TextView)ll.getChildAt(i)).setTextColor(getColor(R.color.soc_background));
+                }
+            }
+            step = 5; 
             advanceStep();
         } else {
             Toast.makeText(this, "That's not the right target!", Toast.LENGTH_SHORT).show();
@@ -96,14 +111,34 @@ public class TutorialActivity extends AppCompatActivity {
     }
 
     private void addLog(String time, String src, String event) {
+        LinearLayout row = new LinearLayout(this);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        
+        TypedValue tvAttr = new TypedValue();
+        getTheme().resolveAttribute(android.R.attr.selectableItemBackground, tvAttr, true);
+        row.setBackgroundResource(tvAttr.resourceId);
+        
+        TextView t1 = cell(time);
+        TextView t2 = cell(src);
+        TextView t3 = cell(event);
+        
+        row.addView(t1);
+        row.addView(t2);
+        row.addView(t3);
+        
+        row.setOnClickListener(v -> handleRowClick(row, event));
+        binding.llLogs.addView(row);
+    }
+    
+    private TextView cell(String text) {
         TextView tv = new TextView(this);
-        tv.setText(String.format("%-10s %-15s %s", time, src, event));
+        tv.setText(text);
+        tv.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
         tv.setTextColor(getColor(R.color.soc_primary));
         tv.setTypeface(android.graphics.Typeface.MONOSPACE);
-        tv.setPadding(16, 24, 16, 24);
-        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        tv.setOnClickListener(v -> handleRowClick(tv, event));
-        binding.llLogs.addView(tv);
+        tv.setPadding(10, 8, 10, 8);
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        return tv;
     }
 
     private void finishTutorial() {
