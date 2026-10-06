@@ -25,6 +25,12 @@ public class HomeFragment extends Fragment {
         
         com.example.cyberbreach.data.DbHelper db = com.example.cyberbreach.data.DbHelper.get(requireContext());
         int stars = db.getTotalStars();
+        String username = db.getUsername();
+        if (username != null && !username.isEmpty()) {
+            binding.tvWelcome.setText("Welcome back, Agent " + username);
+        } else {
+            binding.tvWelcome.setText("Welcome to Cyber Command");
+        }
         
         binding.tvRankText.setText(com.example.cyberbreach.data.DbHelper.rankForStars(stars));
         binding.tvCredits.setText(String.valueOf(db.getCredits()));
@@ -46,6 +52,13 @@ public class HomeFragment extends Fragment {
         com.example.cyberbreach.data.DbHelper db = com.example.cyberbreach.data.DbHelper.get(requireContext());
         binding.tvRankText.setText(com.example.cyberbreach.data.DbHelper.rankForStars(db.getTotalStars()));
         binding.tvCredits.setText(String.valueOf(db.getCredits()));
+        
+        String username = db.getUsername();
+        if (username != null && !username.isEmpty()) {
+            binding.tvWelcome.setText("Welcome back, Agent " + username);
+        } else {
+            binding.tvWelcome.setText("Welcome to Cyber Command");
+        }
     }
 
     @Override

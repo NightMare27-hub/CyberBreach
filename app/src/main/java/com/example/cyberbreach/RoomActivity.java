@@ -100,6 +100,26 @@ public class RoomActivity extends AppCompatActivity {
         setupHintButton();
         setupBackHandling();
         updateHud();
+
+        View btnHelp = findViewById(R.id.btnHelp);
+        if (btnHelp != null) {
+            btnHelp.setOnClickListener(v -> showCheatSheet());
+        }
+    }
+
+    private void showCheatSheet() {
+        if (finished) return;
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("Tool Cheat Sheet")
+                .setMessage("Packet Analyzer: Flags malicious IP (Identify)\n" +
+                        "Firewall: Blocks malicious IP (Mitigate)\n" +
+                        "Log Filter: Extracts source IP from alerts\n" +
+                        "Patch Manager: Mitigates Zero-Day exploits\n" +
+                        "Isolation Framework: Mitigates Ransomware\n" +
+                        "Email Gateway: Mitigates Phishing\n" +
+                        "Crypto Manager: Mitigates MitM attacks")
+                .setPositiveButton("Dismiss", null)
+                .show();
     }
 
     @Override

@@ -6,6 +6,18 @@ public class ToolEngine {
     private static final int BASE_HINT_COST_SEC = 10;
     private static final int BASE_UPGRADE_COST_CREDITS = 30;
 
+    /** Calculates required stars to unlock a tool. */
+    public static int getRequiredStarsForTool(String toolId) {
+        switch (toolId.toLowerCase()) {
+            case "log_filter": return 3;
+            case "patch_manager": return 6;
+            case "isolation_framework": return 10;
+            case "email_gateway": return 15;
+            case "crypto_manager": return 20;
+            default: return 0; // Firewall and Packet Analyzer
+        }
+    }
+
     /** Calculates firewall breach penalty points based on firewall tier (Tier 1 = 15%, Tier 2 = 12%, ..., min 3%). */
     public static int calculateFirewallPenalty(int firewallTier) {
         int tier = Math.max(1, firewallTier);

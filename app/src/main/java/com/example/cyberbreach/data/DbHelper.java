@@ -16,7 +16,7 @@ import java.util.Set;
 public class DbHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "cyberbreach.db";
-    private static final int DB_VERSION = 4;
+    private static final int DB_VERSION = 5;
 
     private static DbHelper instance;
 
@@ -53,12 +53,15 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE tool_upgrades ("
                 + "tool_id TEXT PRIMARY KEY, tier INTEGER DEFAULT 1)");
         db.execSQL("CREATE TABLE player ("
-                + "id INTEGER PRIMARY KEY CHECK (id = 1), credits INTEGER DEFAULT 0)");
+                + "id INTEGER PRIMARY KEY CHECK (id = 1), "
+                + "username TEXT, "
+                + "tutorial_completed INTEGER DEFAULT 0, "
+                + "credits INTEGER DEFAULT 0)");
         db.execSQL("CREATE TABLE achievements ("
                 + "achievement_id TEXT PRIMARY KEY, "
                 + "unlocked_at INTEGER NOT NULL)");
 
-        db.execSQL("INSERT INTO player (id, credits) VALUES (1, 0)");
+        db.execSQL("INSERT INTO player (id, credits, tutorial_completed) VALUES (1, 0, 0)");
         // Only Firewall and Packet Analyzer are unlocked initially. Others are tier 0 (locked).
         db.execSQL("INSERT INTO tool_upgrades (tool_id, tier) VALUES "
                 + "('firewall', 1), ('packet_analyzer', 1), "
@@ -81,8 +84,11 @@ public class DbHelper extends SQLiteOpenHelper {
             db.execSQL("INSERT OR IGNORE INTO tool_upgrades (tool_id, tier) VALUES ('crypto_manager', 0)");
         }
         if (oldVersion < 4) {
-            // Lock tools that were previously unlocked by default (but preserve upgrades if tier > 1)
             db.execSQL("UPDATE tool_upgrades SET tier = 0 WHERE tier = 1 AND tool_id NOT IN ('firewall', 'packet_analyzer')");
+        }
+        if (oldVersion < 5) {
+            db.execSQL("ALTER TABLE player ADD COLUMN username TEXT");
+            db.execSQL("ALTER TABLE player ADD COLUMN tutorial_completed INTEGER DEFAULT 0");
         }
     }
 
@@ -205,6 +211,28 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public int getToolTier(String toolId) {
         return queryInt("SELECT tier FROM tool_upgrades WHERE tool_id = ?", new String[]{toolId});
+    }
+
+    public String getUsername() {
+        try (Cursor c = getReadableDatabase().rawQuery("SELECT username FROM player WHERE id = 1", null)) {
+            return (c.moveToFirst() && !c.isNull(0)) ? c.getString(0) : null;
+        }
+    }
+
+    public void setUsername(String username) {
+        ContentValues cv = new ContentValues();
+        cv.put("username", username);
+        getWritableDatabase().update("player", cv, "id = 1", null);
+    }
+
+    public boolean isTutorialCompleted() {
+        return queryInt("SELECT tutorial_completed FROM player WHERE id = 1", null) == 1;
+    }
+
+    public void setTutorialCompleted() {
+        ContentValues cv = new ContentValues();
+        cv.put("tutorial_completed", 1);
+        getWritableDatabase().update("player", cv, "id = 1", null);
     }
 
     private int queryInt(String sql, String[] args) {

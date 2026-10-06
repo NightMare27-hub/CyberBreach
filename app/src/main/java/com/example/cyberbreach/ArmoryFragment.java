@@ -61,13 +61,29 @@ public class ArmoryFragment extends Fragment {
 
         int tier = db.getToolTier(toolId);
         int cost = ToolEngine.getUpgradeCost(tier);
+        int requiredStars = ToolEngine.getRequiredStarsForTool(toolId);
+        int userStars = db.getTotalStars();
         
         tvToolDesc.setText(ToolEngine.getUpgradeCapabilityDescription(toolId, tier));
         
         if (tier == 0) {
-            btnUpgrade.setText("UNLOCK\n" + cost + " C");
+            if (userStars < requiredStars) {
+                btnUpgrade.setText("REQ: " + requiredStars + " STARS");
+                btnUpgrade.setEnabled(false);
+                cardRoot.setAlpha(0.5f);
+                tvToolName.setTextColor(getResources().getColor(R.color.soc_text_secondary, null));
+                ivIcon.setImageResource(android.R.drawable.ic_lock_lock); // Show a lock symbol!
+            } else {
+                btnUpgrade.setText("UNLOCK\n" + cost + " C");
+                btnUpgrade.setEnabled(true);
+                cardRoot.setAlpha(1.0f);
+                tvToolName.setTextColor(getResources().getColor(R.color.soc_primary, null));
+            }
         } else {
             btnUpgrade.setText("UPGRADE\n" + cost + " C");
+            btnUpgrade.setEnabled(true);
+            cardRoot.setAlpha(1.0f);
+            tvToolName.setTextColor(getResources().getColor(R.color.soc_primary, null));
         }
 
         btnUpgrade.setOnClickListener(v -> {

@@ -126,7 +126,13 @@ public class ProfileFragment extends Fragment {
 
     private void refresh() {
         int stars = db.getTotalStars();
-        binding.tvRank.setText(DbHelper.rankForStars(stars));
+        String username = db.getUsername();
+        if (username != null && !username.isEmpty()) {
+            binding.tvRank.setText("Agent " + username + "\n" + DbHelper.rankForStars(stars));
+        } else {
+            binding.tvRank.setText("Agent\n" + DbHelper.rankForStars(stars));
+        }
+        
         binding.tvTotalStars.setText(String.valueOf(stars));
         binding.tvCredits.setText(String.valueOf(db.getCredits()));
         binding.tvAttempts.setText(String.valueOf(db.getAttemptCount()));
