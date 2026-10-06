@@ -25,7 +25,11 @@ public class TutorialActivity extends AppCompatActivity {
         binding = ActivityTutorialBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.overlayLayer.setOnClickListener(v -> advanceStep());
+        binding.overlayLayer.setOnClickListener(v -> {
+            if (step == 0) advanceStep();
+        });
+        
+        binding.bottomBar.setOnClickListener(v -> handleToolClick());
     }
 
     private void advanceStep() {
@@ -35,17 +39,20 @@ public class TutorialActivity extends AppCompatActivity {
                 binding.overlayLayer.setVisibility(View.GONE);
                 addLog("00:01", "192.168.1.10", "HTTP_GET");
                 addLog("00:02", "192.168.1.12", "HTTP_GET");
-                binding.overlayLayer.postDelayed(this::advanceStep, 1000);
+                new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(this::advanceStep, 1000);
                 break;
             case 2:
                 maliciousRow = addLog("00:03", "10.0.0.55", "SYN_FLOOD");
-                binding.tvOverlay.setText("Anomalous traffic detected!\n\nStep 1: Identify\n[ TAP ANYWHERE TO SELECT PACKET ANALYZER ]");
+                binding.tvOverlay.setText("Anomalous traffic detected!\n\nStep 1: Identify\nTap the Tool bar below to select your Packet Analyzer.");
                 binding.overlayLayer.setVisibility(View.VISIBLE);
+                // Allow clicks to pass through to the real UI
+                binding.overlayLayer.setClickable(false);
+                binding.overlayLayer.setFocusable(false);
                 break;
             case 3:
                 binding.ivTool.setImageResource(android.R.drawable.ic_menu_search);
                 binding.tvTool.setText("Packet Analyzer");
-                binding.tvOverlay.setText("Analyzer selected.\n\n[ TAP ANYWHERE TO FLAG THE ATTACKER ]");
+                binding.tvOverlay.setText("Analyzer ready.\nNow tap the SYN_FLOOD log in the list to FLAG the attacker.");
                 break;
             case 4:
                 if (maliciousRow != null) {
@@ -54,12 +61,12 @@ public class TutorialActivity extends AppCompatActivity {
                         ((TextView) maliciousRow.getChildAt(i)).setTextColor(getColor(R.color.soc_background));
                     }
                 }
-                binding.tvOverlay.setText("Target Flagged!\n\nStep 2: Mitigate\n[ TAP ANYWHERE TO SELECT FIREWALL ]");
+                binding.tvOverlay.setText("Target Flagged!\n\nStep 2: Mitigate\nTap the Tool bar again to select your Firewall.");
                 break;
             case 5:
                 binding.ivTool.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
                 binding.tvTool.setText("Firewall");
-                binding.tvOverlay.setText("Firewall selected.\n\n[ TAP ANYWHERE TO BLOCK THE IP ]");
+                binding.tvOverlay.setText("Firewall ready.\nNow tap the flagged orange log to BLOCK the IP.");
                 break;
             case 6:
                 if (maliciousRow != null) {
@@ -68,11 +75,31 @@ public class TutorialActivity extends AppCompatActivity {
                         ((TextView) maliciousRow.getChildAt(i)).setTextColor(getColor(R.color.soc_background));
                     }
                 }
-                binding.tvOverlay.setText("Incident Contained!\n\nYou're ready to deploy.\n[ TAP TO ENTER THE DASHBOARD ]");
+                binding.tvOverlay.setText("Incident Contained!\n\nYou're ready to deploy.\nTap anywhere to enter the Dashboard.");
+                binding.overlayLayer.setClickable(true);
+                binding.overlayLayer.setFocusable(true);
+                binding.overlayLayer.setOnClickListener(v -> finishTutorial());
                 break;
-            case 7:
-                finishTutorial();
-                break;
+        }
+    }
+
+    private void handleToolClick() {
+        if (step == 2) {
+            advanceStep();
+        } else if (step == 4) {
+            advanceStep();
+        } else {
+            Toast.makeText(this, "Follow the instructions on screen!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void handleRowClick(View row, String event) {
+        if (step == 3 && event.equals("SYN_FLOOD")) {
+            advanceStep();
+        } else if (step == 5 && event.equals("SYN_FLOOD")) {
+            advanceStep();
+        } else {
+            Toast.makeText(this, "That's not the right target!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -87,6 +114,8 @@ public class TutorialActivity extends AppCompatActivity {
         row.addView(cell(time));
         row.addView(cell(src));
         row.addView(cell(event));
+        
+        row.setOnClickListener(v -> handleRowClick(row, event));
         
         binding.llLogs.addView(row);
         return row;
