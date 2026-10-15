@@ -1,8 +1,8 @@
-# Task List - Engine Refactoring Part 1: LevelEngine
+# Task List - GitHub Pages Remote Levels & Lessons System
 
-- [x] Task 1: Create Git feature branch `feature/level-engine`
-- [x] Task 2: Create MasteryStatus, StarBreakdown, and LevelEngine classes
-- [x] Task 3: Update Level model for difficulty ratings and concept tags
-- [x] Task 4: Integrate LevelEngine into DbHelper, LevelAdapter, and ResultActivity
-- [x] Task 5: Create LevelEngineTest unit test suite
-- [/] Task 6: Run Unit Tests and Verify Project Compilation
+- [x] Task 1: Create root static JSON files (levels.json and lessons.json)
+- [x] Task 2: Update AppConfig with GitHub Pages endpoints
+- [x] Task 3: Create LessonParser and LessonRepository
+- [x] Task 4: Update LearnFragment for dynamic remote lesson loading
+- [x] Task 5: Create LessonParserTest unit test suite
+- [x] Task 6: Run Unit Tests, Verify Build, Commit, Tag v1.2.0, and Push to GitHub

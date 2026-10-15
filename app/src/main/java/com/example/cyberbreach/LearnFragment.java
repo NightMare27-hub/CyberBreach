@@ -12,18 +12,23 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.cyberbreach.data.DbHelper;
 import com.example.cyberbreach.data.LessonParser;
 import com.example.cyberbreach.data.LessonRepository;
 import com.example.cyberbreach.databinding.FragmentLearnBinding;
+import com.example.cyberbreach.engine.Achievement;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class LearnFragment extends Fragment {
 
     private FragmentLearnBinding binding;
     private LessonRepository repository;
     private List<LessonParser.LessonData> currentLessons = new ArrayList<>();
+    private final Set<Integer> viewedLessonIndices = new HashSet<>();
 
     @Nullable
     @Override
@@ -56,6 +61,9 @@ public class LearnFragment extends Fragment {
         binding.spLesson.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
+                viewedLessonIndices.add(position);
+                checkScholarAchievement(files.length);
+
                 if (currentLessons.isEmpty()) {
                     binding.webLesson.loadUrl("file:///android_asset/lessons/" + files[position]);
                 } else if (position < currentLessons.size()) {
@@ -71,6 +79,12 @@ public class LearnFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) { }
         });
+    }
+
+    private void checkScholarAchievement(int totalLessons) {
+        if (totalLessons > 0 && viewedLessonIndices.size() >= totalLessons) {
+            DbHelper.get(requireContext()).unlockAchievement(Achievement.SCHOLAR.name());
+        }
     }
 
     private void loadRemoteLessons() {

@@ -2,7 +2,6 @@ package com.example.cyberbreach.engine;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class StatsEngine {
 
@@ -35,7 +34,7 @@ public class StatsEngine {
     }
 
     /** Evaluates achievements unlocked for a completed room attempt. */
-    public static List<Achievement> evaluateAchievements(boolean solved, int timeSec, int wrongActions, int hintsUsed, boolean usedAnalyzer) {
+    public static List<Achievement> evaluateAchievements(boolean solved, int timeSec, int wrongActions, int hintsUsed, boolean usedAnalyzer, int totalStars, int maxStarsPossible) {
         List<Achievement> unlocked = new ArrayList<>();
         if (!solved) return unlocked;
 
@@ -48,26 +47,7 @@ public class StatsEngine {
         if (!usedAnalyzer && hintsUsed == 0) {
             unlocked.add(Achievement.EAGLE_EYE);
         }
-        return unlocked;
-    }
-
-    /**
-     * Evaluates global achievements that require data across all levels.
-     * @param allStars map of levelId to star count for each completed level
-     * @param totalLevelCount total number of available levels
-     */
-    public static List<Achievement> evaluateGlobalAchievements(
-            Map<String, Integer> allStars, int totalLevelCount) {
-        List<Achievement> unlocked = new ArrayList<>();
-        if (totalLevelCount <= 0 || allStars.size() < totalLevelCount) return unlocked;
-        boolean allThreeStars = true;
-        for (int stars : allStars.values()) {
-            if (stars < 3) {
-                allThreeStars = false;
-                break;
-            }
-        }
-        if (allThreeStars) {
+        if (maxStarsPossible > 0 && totalStars >= maxStarsPossible) {
             unlocked.add(Achievement.MASTER_ANALYST);
         }
         return unlocked;

@@ -36,9 +36,10 @@ public class StatsEngineTest {
 
     @Test
     public void achievementEvaluations() {
-        List<Achievement> achievements = StatsEngine.evaluateAchievements(true, 25, 0, 0, false);
+        List<Achievement> achievements = StatsEngine.evaluateAchievements(true, 25, 0, 0, false, 9, 9);
         assertTrue(achievements.contains(Achievement.IRON_WALL));
         assertTrue(achievements.contains(Achievement.SPEED_DEMON));
         assertTrue(achievements.contains(Achievement.EAGLE_EYE));
+        assertTrue(achievements.contains(Achievement.MASTER_ANALYST));
     }
 }

@@ -15,19 +15,23 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.example.cyberbreach.data.DbHelper;
 import com.example.cyberbreach.data.PrefsManager;
 import com.example.cyberbreach.databinding.FragmentProfileBinding;
-import com.example.cyberbreach.engine.ToolEngine;
+import com.example.cyberbreach.engine.Achievement;
 import com.example.cyberbreach.notify.ReminderScheduler;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import java.util.Arrays;
 
 public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
     private DbHelper db;
     private PrefsManager prefs;
+    private AchievementAdapter achievementAdapter;
     private boolean ignoreSwitch = false;
 
     private final ActivityResultLauncher<String> notificationPermission = registerForActivityResult(
@@ -62,6 +66,12 @@ public class ProfileFragment extends Fragment {
 
         binding.switchReminder.setChecked(prefs.isReminderEnabled());
         binding.switchReminder.setOnCheckedChangeListener((b, checked) -> onReminderToggled(checked));
+
+        achievementAdapter = new AchievementAdapter(
+                Arrays.asList(Achievement.values()),
+                db.getUnlockedAchievements());
+        binding.rvAchievements.setLayoutManager(new GridLayoutManager(requireContext(), 2));
+        binding.rvAchievements.setAdapter(achievementAdapter);
 
         binding.btnResetProgress.setOnClickListener(v -> confirm(
                 R.string.dialog_reset_title, R.string.dialog_reset_message, () -> {
@@ -126,46 +136,14 @@ public class ProfileFragment extends Fragment {
 
     private void refresh() {
         int stars = db.getTotalStars();
-        String username = db.getUsername();
-        if (username != null && !username.isEmpty()) {
-            binding.tvRank.setText("Agent " + username + "\n" + DbHelper.rankForStars(stars));
-        } else {
-            binding.tvRank.setText("Agent\n" + DbHelper.rankForStars(stars));
-        }
-        
+        binding.tvRank.setText(DbHelper.rankForStars(stars));
         binding.tvTotalStars.setText(String.valueOf(stars));
         binding.tvCredits.setText(String.valueOf(db.getCredits()));
         binding.tvAttempts.setText(String.valueOf(db.getAttemptCount()));
         binding.ivRank.setImageResource(android.R.drawable.btn_star_big_on);
 
-        // Load Certifications
-        binding.certContainer.removeAllViews();
-        java.util.List<com.example.cyberbreach.engine.CertificationEngine.Certification> certs = 
-                com.example.cyberbreach.engine.CertificationEngine.getCertifications(db);
-        
-        for (com.example.cyberbreach.engine.CertificationEngine.Certification c : certs) {
-            View card = getLayoutInflater().inflate(R.layout.item_certification, binding.certContainer, false);
-            
-            android.widget.TextView tvName = card.findViewById(R.id.tvCertName);
-            android.widget.TextView tvDesc = card.findViewById(R.id.tvCertDesc);
-            android.widget.TextView tvProg = card.findViewById(R.id.tvProgress);
-            android.widget.ProgressBar pb = card.findViewById(R.id.pbProgress);
-            android.widget.ImageView iv = card.findViewById(R.id.ivBadge);
-
-            tvName.setText(c.name);
-            tvDesc.setText(c.description);
-            tvProg.setText(c.progress + "/" + c.maxProgress);
-            pb.setMax(c.maxProgress);
-            pb.setProgress(c.progress);
-
-            if (c.unlocked) {
-                iv.setImageResource(android.R.drawable.btn_star_big_on);
-                iv.setColorFilter(requireContext().getColor(R.color.soc_accent_cyan));
-            } else {
-                iv.setImageResource(android.R.drawable.btn_star_big_off);
-            }
-            
-            binding.certContainer.addView(card);
+        if (achievementAdapter != null) {
+            achievementAdapter.setUnlockedIds(db.getUnlockedAchievements());
         }
     }
 

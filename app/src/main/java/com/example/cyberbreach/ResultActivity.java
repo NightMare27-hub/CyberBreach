@@ -9,12 +9,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.cyberbreach.data.DbHelper;
 import com.example.cyberbreach.data.PrefsManager;
 import com.example.cyberbreach.databinding.ActivityResultBinding;
+import com.example.cyberbreach.engine.Achievement;
 import com.example.cyberbreach.engine.LevelEngine;
 import com.example.cyberbreach.engine.StarBreakdown;
 import com.example.cyberbreach.engine.StatsEngine;
 import com.example.cyberbreach.model.Level;
 import com.example.cyberbreach.model.LevelStore;
 
+import java.util.List;
 import java.util.Locale;
 
 public class ResultActivity extends AppCompatActivity {
@@ -26,7 +28,6 @@ public class ResultActivity extends AppCompatActivity {
     private int hints;
     private int wrong;
     private String mode;
-    private com.example.cyberbreach.audio.SoundManager sound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,13 +98,6 @@ public class ResultActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             saveResult(breakdown.totalStars);
-            PrefsManager prefs = new PrefsManager(this);
-            sound = new com.example.cyberbreach.audio.SoundManager(this, prefs.isMuted(), prefs.isHapticsEnabled());
-            if (solved) {
-                sound.success();
-            } else {
-                sound.alert();
-            }
         }
     }
 
@@ -124,6 +118,15 @@ public class ResultActivity extends AppCompatActivity {
             int awardedCredits = StatsEngine.calculateAwardedCredits(evaluatedStars, streak);
             db.addCredits(awardedCredits);
         }
+
+        // Evaluate and unlock room achievement badges
+        int maxStars = LevelStore.getLevels().size() * 3;
+        List<Achievement> achievements = StatsEngine.evaluateAchievements(
+                solved, timeSec, wrong, hints, false, db.getTotalStars(), maxStars);
+        for (Achievement ach : achievements) {
+            db.unlockAchievement(ach.name());
+        }
+
         new PrefsManager(this).updateStreak();
     }
 
@@ -134,13 +137,5 @@ public class ResultActivity extends AppCompatActivity {
         send.setType("text/plain");
         send.putExtra(Intent.EXTRA_TEXT, text);
         startActivity(Intent.createChooser(send, getString(R.string.share_chooser)));
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (sound != null) {
-            sound.release();
-        }
     }
 }
