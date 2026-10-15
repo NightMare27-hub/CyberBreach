@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "pack": "Core Security Lessons",
+  "lessons": [
+    {
+      "id": "les_ports",
+      "title": "What is a port?",
+      "filename": "ports.html",
+      "contentHtml": "<!DOCTYPE html><html><head><meta charset='utf-8'><style>body{font-family:sans-serif;padding:16px;line-height:1.55;color:#E0F7FA;background-color:transparent;}h2{color:#00E5FF;}code{background:#102A43;padding:2px 5px;border-radius:4px;color:#3DDC84;}</style></head><body><h2>What is a port?</h2><p>An IP address finds a computer. A <b>port</b> finds the service running on it, like an apartment number inside a building.</p><ul><li><code>80</code> HTTP (web, unencrypted)</li><li><code>443</code> HTTPS (web, encrypted)</li><li><code>22</code> SSH (secure remote login)</li><li><code>23</code> Telnet (remote login, <b>not encrypted</b>)</li><li><code>53</code> DNS (turns names into addresses)</li></ul><p><b>Rule of thumb:</b> every open port is a door. Close the ones nobody needs.</p></body></html>"
+    },
+    {
+      "id": "les_bruteforce",
+      "title": "Brute-force attacks",
+      "filename": "bruteforce.html",
+      "contentHtml": "<!DOCTYPE html><html><head><meta charset='utf-8'><style>body{font-family:sans-serif;padding:16px;line-height:1.55;color:#E0F7FA;background-color:transparent;}h2{color:#00E5FF;}code{background:#102A43;padding:2px 5px;border-radius:4px;color:#FFB300;}</style></head><body><h2>Brute-force attacks</h2><p>A brute-force attack guesses passwords again and again until one works. In logs it looks like many <code>LOGIN_FAIL</code> lines from the same address, often followed by a <code>LOGIN_OK</code>.</p><h3>How defenders stop it</h3><ul><li>Block or rate-limit the source address</li><li>Lock accounts after repeated failures</li><li>Use long passwords and multi-factor authentication</li></ul></body></html>"
+    },
+    {
+      "id": "les_patching",
+      "title": "Software Patching",
+      "filename": "patching.html",
+      "contentHtml": "<!DOCTYPE html><html><head><meta charset='utf-8'><style>body{font-family:sans-serif;padding:16px;line-height:1.55;color:#E0F7FA;background-color:transparent;}h2{color:#00E5FF;}code{background:#102A43;padding:2px 5px;border-radius:4px;color:#FF5252;}</style></head><body><h2>Software Patching</h2><p>Attackers scan for software vulnerabilities with known, unpatched flaws. Blocking an IP only stops one attacker; patching fixes the root vulnerability permanently across your entire infrastructure.</p></body></html>"
+    }
+  ]
+}

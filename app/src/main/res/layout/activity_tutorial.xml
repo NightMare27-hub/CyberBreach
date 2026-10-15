@@ -1,203 +1,209 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/soc_background"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
-    <!-- The Fake Level UI (Matches RoomActivity exactly) -->
+    <!-- Top Bar -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@drawable/bg_terminal_card"
+        android:layout_margin="8dp">
 
-        <!-- Top Bar -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TUTORIAL_01  |  CYBER COMMAND"
+            android:textColor="@color/soc_text_secondary"
+            android:fontFamily="monospace"
+            android:textSize="13sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:text="02:00"
+                android:textColor="@color/soc_primary"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvBreach"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:text="BREACH 0%"
+                    android:textColor="@color/soc_warning"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <ProgressBar
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp"
+                    android:progressDrawable="@drawable/bg_pill_badge"
+                    android:max="100"
+                    android:progress="0" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Guided Instruction Banner Card (Integrated cleanly above logs) -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/guidanceCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="8dp"
+        app:cardBackgroundColor="@color/soc_surface"
+        app:strokeColor="@color/soc_accent_cyan"
+        app:strokeWidth="2dp"
+        app:cardCornerRadius="12dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"
-            android:background="@drawable/bg_terminal_card"
-            android:layout_margin="8dp">
+            android:padding="12dp">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TUTORIAL_01  |  CYBER COMMAND"
-                android:textColor="@color/soc_text_secondary"
-                android:fontFamily="monospace"
-                android:textSize="13sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="monospace"
-                    android:text="--:--"
-                    android:textColor="@color/soc_primary"
-                    android:textSize="32sp"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="monospace"
-                        android:text="BREACH 0%"
-                        android:textColor="@color/soc_warning"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <ProgressBar
-                        style="?android:attr/progressBarStyleHorizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="8dp"
-                        android:progressDrawable="@drawable/bg_pill_badge"
-                        android:max="100"
-                        android:progress="0" />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- Logs Area -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginBottom="8dp"
-            app:cardBackgroundColor="@color/soc_surface"
-            app:strokeColor="@color/soc_surface_stroke"
-            app:strokeWidth="1dp"
-            app:cardCornerRadius="12dp">
-
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fillViewport="true">
-
-                <LinearLayout
-                    android:id="@+id/llLogs"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="8dp">
-
-                    <!-- Header Row -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="TIME" android:textColor="@color/soc_text_secondary" android:fontFamily="monospace" android:textSize="12sp" android:textStyle="bold"/>
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="SOURCE" android:textColor="@color/soc_text_secondary" android:fontFamily="monospace" android:textSize="12sp" android:textStyle="bold"/>
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="EVENT" android:textColor="@color/soc_text_secondary" android:fontFamily="monospace" android:textSize="12sp" android:textStyle="bold"/>
-                    </LinearLayout>
-                    
-                </LinearLayout>
-            </ScrollView>
-        </com.google.android.material.card.MaterialCardView>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="monospace"
-            android:paddingHorizontal="16dp"
-            android:paddingBottom="8dp"
-            android:text="System Initializing..."
-            android:textColor="@color/soc_text_secondary"
-            android:textSize="13sp" />
-
-        <!-- Fake Tool Bar -->
-        <LinearLayout
-            android:id="@+id/bottomBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_terminal_card"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginBottom="8dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="12dp"
-            android:clickable="true"
-            android:focusable="true">
-
-            <ImageView
-                android:id="@+id/ivTool"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:padding="8dp"
-                android:background="@drawable/bg_pill_badge"
-                android:src="@android:drawable/ic_menu_search"
-                app:tint="@color/soc_primary" />
-
-            <!-- Fake Spinner Text to look like spinner -->
-            <TextView
-                android:id="@+id/tvTool"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_weight="1"
-                android:text="Packet Analyzer"
-                android:textColor="@color/soc_primary"
-                android:textSize="16sp" />
-
-            <Button
+                android:id="@+id/tvGuideStep"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_neon_button"
-                android:textColor="@color/soc_background"
-                android:textStyle="bold"
-                android:layout_marginStart="8dp"
-                android:text="@string/btn_hint"
-                android:enabled="false" />
+                android:text="ANALYST ONBOARDING - STEP 1/3"
+                android:textColor="@color/soc_accent_cyan"
+                android:fontFamily="monospace"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvGuideText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Welcome Analyst! Select Packet Analyzer, then tap the malicious SYN_FLOOD entry (10.0.0.55) to flag it."
+                android:textColor="@color/soc_text_primary"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/btnNextStep"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="8dp"
+                android:text="Continue ->" />
         </LinearLayout>
-    </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
-    <!-- Overlay Layer -->
-    <LinearLayout
-        android:id="@+id/overlayLayer"
+    <!-- Logs Area -->
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#D9000000"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:clickable="true"
-        android:focusable="true">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="8dp"
+        app:cardBackgroundColor="@color/soc_surface"
+        app:strokeColor="@color/soc_surface_stroke"
+        app:strokeWidth="1dp"
+        app:cardCornerRadius="12dp">
 
-        <TextView
-            android:id="@+id/tvOverlay"
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:id="@+id/llLogs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <!-- Header Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="6dp">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="TIME" android:textColor="@color/soc_text_secondary" android:fontFamily="monospace" android:textSize="12sp" android:textStyle="bold"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="SOURCE" android:textColor="@color/soc_text_secondary" android:fontFamily="monospace" android:textSize="12sp" android:textStyle="bold"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="EVENT" android:textColor="@color/soc_text_secondary" android:fontFamily="monospace" android:textSize="12sp" android:textStyle="bold"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="monospace"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="8dp"
+        android:text="Select a tool, then tap a log row."
+        android:textColor="@color/soc_text_secondary"
+        android:textSize="13sp" />
+
+    <!-- Tool Selector Bar (Completely Visible & Unobstructed at Bottom!) -->
+    <LinearLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_terminal_card"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+        <ImageView
+            android:id="@+id/ivTool"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_pill_badge"
+            android:padding="8dp"
+            android:src="@android:drawable/ic_menu_search"
+            app:tint="@color/soc_primary" />
+
+        <Spinner
+            android:id="@+id/spTool"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:minHeight="48dp" />
+
+        <Button
+            android:id="@+id/btnHint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="32dp"
-            android:text="Welcome Agent. We have an active breach!"
-            android:textColor="@color/soc_accent_cyan"
-            android:textSize="22sp"
+            android:background="@drawable/bg_neon_button"
+            android:textColor="@color/soc_background"
             android:textStyle="bold"
-            android:gravity="center" />
-            
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="[ TAP ANYWHERE TO CONTINUE ]"
-            android:textColor="@color/soc_text_secondary"
-            android:textSize="14sp"
-            android:layout_marginTop="24dp"
-            android:fontFamily="monospace" />
-            
+            android:layout_marginStart="8dp"
+            android:text="@string/btn_hint" />
     </LinearLayout>
 
-</FrameLayout>
-
+</LinearLayout>
